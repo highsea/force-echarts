@@ -1,16 +1,39 @@
 <?php
 
-/*date_default_timezone_set("prc");  
+/**
+*   @author Gao Hai <admin@highsea90.com>
+*   抓取 categoryapi 数据（该数据量较小，使用 session 存储）
+*   
+#数据服务器 
+#60.191.125.156 test.com
+#60.191.125.156 www.test.com
+*/ 
+session_start();
+define("SEARVER_HOST","http://60.191.125.156/");
+date_default_timezone_set("prc");  
 $stringtime = date("Y-m-d H:i:s",time());
-//echo "stringtime:".$stringtime;
 $Key = "aabbccdd";
-$Sign = md5(strtotime($stringtime).$Key);*/
+$timespan = strtotime($stringtime);
+$Sign = md5($timespan.$Key);
+$categoriesArr=0;
+$categoryapiLegendArr=0;
+$alert = '';
 
-include 'include/api.php';
+$cache = isset($_GET['cache'])?$_GET['cache']:'yes';
 
-//echo strtotime($stringtime);
-//echo strtotime($stringtime).$Key;
-//echo strtotime("2015/01/22");
+if (!$_SESSION['categoriesArr']||!$_SESSION['categoryapiLegendArr']) {
+    include 'include/api.php';
+}elseif($cache=='refresh'){
+    include 'include/api.php';
+    $categoryapiLegendArr = $_SESSION['categoryapiLegendArr'];
+    $categoriesArr = $_SESSION['categoriesArr'];
+
+}else{
+    $categoryapiLegendArr = $_SESSION['categoryapiLegendArr'];
+    $categoriesArr = $_SESSION['categoriesArr'];
+
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +58,7 @@ include 'include/api.php';
                 <h4>力导向图</h4>
                 <p>for 复杂网络节点</p>
                 <p>by <i class="icon-inbox"></i> <a href="https://github.com/highsea/">highsea</a> </p>
+                <button id="refreshBTN" type="button" class="btn btn-danger"> 刷新缓存 </button>
             </div>
             <div class="span6">
                 <p>PHP.ini 请开启 curl 模块，<span class="label label-info">并在服务端</span> 对 hosts 做如下修改：</p>
@@ -74,7 +98,7 @@ include 'include/api.php';
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row forcePic">
         <div id="main" style="height:800px" class="span12"></div>
 <!--         <div class="span12">
     <span>查看商户列表</span>
@@ -107,11 +131,9 @@ include 'include/api.php';
 <script type="text/javascript">
 //立即获取分类
 //ajaxForce ('categoryapi', 0, 0, 'refresh', 0);
+//分类 部分由 php curl 获取
 
-
-//ajaxForce('nodesapi', search_type, userSelectTime, 'refresh', '');
-
-//配置例子
+//echarts zrender 模块化配置
 require.config({
     packages: [
         {
@@ -130,15 +152,13 @@ require.config({
 
 
 /*initStore();
+// 本地缓存 local store 兼容 ie6+
 function initStore() {
     //store.disabled = 'ture';
     if (!store.enabled) {
         alert('警告：你的浏览器不支持本地缓存！由于节点数据量巨大，请更换浏览器！')
         return window.location.href = "http://rj.baidu.com/soft/detail/14744.html?ald"
     }
-    store.set('username', 'highsea');
-    var user = store.get('username');
-    //console.log(user);
 }
 */
 //时间控件
@@ -156,110 +176,59 @@ $('#datetimepicker').datetimepicker({
 
 
 
+if (store.get('categoryapiLegendArr')==undefined||store.get('categoriesArr')==undefined||store.get('categoryapiLegendArr')==0||store.get('categoriesArr')==0) {
+    store.set('categoryapiLegendArr', <?=$categoryapiLegendArr ?>);
+    store.set('categoriesArr', <?=$categoriesArr ?>);  
+
+}
+
+var categoryapiLegendArr = store.get('categoryapiLegendArr'),
+    categoriesArr = store.get('categoriesArr');
+
+
+//console.log(store.get('categoryapiLegendArr'));
+//console.log(categoriesArr);
+
 
 
 //点击查询
 $('#ajaxSearch').on('click',function(){
+
+    var gaohai = store.get('gaohai'),
+        seriesNodes = store.get('nodesapiArr'),
+        seriesLinks = store.get('linksapiArr');
+
     var search_type = $('#search_type').val(),
         select_time = $('#select_time').val();
-    //ajaxSearchTime = time_unix (new Date());
     userSelectTime = time_unix (select_time);
-    //console.log("222:"+search_type+":"+select_time+":"+userSelectTime);
-    //nodesapi linksapi isolated
 
-//ajaxForce('nodesapi', search_type, userSelectTime, 'refresh', '');
-//ajaxForce('nodesapi', search_type, userSelectTime, 'refresh');
+var hostError = '<?=$alert ?>';
 
-setTimeout(function(){ ajaxForce('nodesapi', search_type, userSelectTime, 'refresh')}, 300 );
+if (!hostError=='') {
 
-setTimeout(function(){ ajaxForce('linksapi', search_type, userSelectTime, 'refresh')}, 700 );
+    alert(hostError);
 
+}else if (seriesNodes==undefined||seriesLinks==undefined) {
 
+    setTimeout(function(){ ajaxForce('nodesapi', search_type, userSelectTime, 'refresh')}, 0 );
+    setTimeout(function(){ ajaxForce('linksapi', search_type, userSelectTime, 'refresh')}, 300 );
 
-/*
-$.when( ajaxForce('nodesapi', search_type, userSelectTime, 'refresh', '') ).
-done(function(){
+    //setTimeout(function(){ forceOption (categoryapiLegendArr, categoriesArr, seriesNodes, seriesLinks)}, 1500 );
 
-   　　　　 ajaxForce ('linksapi', search_type, userSelectTime, 'refresh', '')
+    //console.log('seriesNodes==undefined||seriesLinks==undefined');
+    //forceOption (categoryapiLegendArr, categoriesArr, seriesNodes, seriesLinks);
 
-　　　　}).
-fail(function(){
-　　
-   　　　　 alert("fail");
+}else{
+
+    //console.log(categoriesArr+':'+categoryapiLegendArr);
+    forceOption (categoryapiLegendArr, categoriesArr, seriesNodes, seriesLinks);
+
+};
+
     
-　　　　});*/
-
-    //var urlTypeArr = ['nodesapi', 'linksapi', 'isolatedapi'];
-
-/*    for (var i = urlTypeArr.length-1; i >= 0; i--) {
-        //判断 是否已经执行过，已经执行则跳出本次循环
-        if (store.get(urlTypeArr[i])==urlTypeArr[i]+'-ajax-OK') {
-            continue; 
-        //判断 上一次的结果，上次成功则继续
-        }else if(i==2){
-            ajaxForce (urlTypeArr[i], search_type, userSelectTime, 'refresh');
-            //alert('ok');
-            //store.get(urlTypeArr[i])==urlTypeArr[i]+'-ajax-OK'
-        }else if(i!=2){
-            alert('1');
-        }else{
-           //失败则 跳出循环
-           break; 
-        }
-    };*/
-
-/*
-                categoriesArr = store.get('categoryapiArr');
-                //console.log(categoriesArr[0]);
-
-                var categoryapiLegendData = [],
-                    categoryapiLegendSelected = [],
-                    newCategory = {},
-                    newCategoryapiLegendSelected={};
-                for(var i in categoriesArr){
-                    categoryapiLegendData[i] = ' '+categoriesArr[i].name+' '; 
-                    categoryapiLegendSelected[i] = categoriesArr[i].name;
-
-                    newCategoryapiLegendSelected[i] = {
-
-                    }
-
-                    newCategory[i] = {
-                        'name':categoriesArr[i].name,
-                        'base':categoriesArr[i].base,
-                        'itemStyle':{
-                            'normal':{
-                                'brushType':'both',
-                                'color':randomColor(),
-                                'strokeColor':randomColor(),
-                                'lineWidth':'1'
-                            }
-                        }
-                    }  
-                }*/ 
-//console.log('新的：'+newCategory[0].itemStyle.normal.color);
-
-//console.log('categoryapiLegendData:'+categoryapiLegendData+';;'+categoryapiLegendSelected);
-
-            /*categoryapiLegendArr = {
-                x: 'left',
-                //selected:categoryapiLegendSelected,
-                data:categoryapiLegendData,
-                orient : 'vertical'
-            }*/
-//console.log('legend:'+categoryapiLegendArr.selected+':'+categoryapiLegendArr.data);
-
-seriesNodes = store.get('nodesapiArr');
-seriesLinks = store.get('linksapiArr');
-
-
-
-forceOption (<?=$categoryapiLegendArr ?>, <?=$categoriesArr ?>, seriesNodes, seriesLinks);
 
 
 });
-
-
 
 
 //ajax
@@ -268,21 +237,18 @@ function ajaxForce (urlType, search_type, userSelectTime, refresh) {
     jQuery.ajax({
         type  : "get",
         async : false,
-        url : 'http://test.com/'+urlType+'/',
+        url : '<?=SEARVER_HOST ?>'+urlType+'/',
         dataType : "jsonp",
         jsonp : "callback",
-        //processData: false, //防止jQuery来为你添加一个Content-Type头
         data : {
             type:search_type,
             cache:refresh,
-            timespan:"<?=strtotime($stringtime) ?>",
+            timespan:"<?=$timespan ?>",
             time:userSelectTime,
             sign:"<?=$Sign ?>"
         },
         jsonpCallback : "dataList",
         success : function(dataList){
-            //console.log(dataList);
-
             //return dataList.data;
             if (dataList.data!=null) {
 
@@ -291,40 +257,27 @@ function ajaxForce (urlType, search_type, userSelectTime, refresh) {
                 //console.log(store.get(urlType));
                 //console.log(store.get(urlType+'Arr'));
 
-/*                if (typeof(cbfunction)=='function') {
-                    setTimeout("cbfunction()",2000);
+                if (typeof(cbfunction)=='function') {
+                    setTimeout("cbfunction()",500);
                     //cbfunction();
                 }else{
                     //console.log(cbfunction);
-                };*/
-
+                };
             };
-
-
-
-
         },
         error: function(){
-            //console.log(urlType+'网络错误！')
+            alert(urlType+'网络错误！请刷新重试！')
         }
     });
 }
 
-
-<?php 
-
-/*function curlForce ($urlType, search_type, $refresh){
-
-    $fetch = new Curl();
-    $apiurl = "http://test.com/".$urlType."/?type=".$search_type."&cache=".$refresh."&timespan=".strtotime($stringtime)."&time=".$userSelectTime."&sign=".$Sign;
-    $body = $fetch->get($apiurl);
-}*/
-
-?>
-
-
-
+$('#refreshBTN').on('click', function(){
+    store.clear();
+    //呵呵
+    window.location.href="./?cache=refresh";
+})
 
 </script>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254155462'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1254155462' type='text/javascript'%3E%3C/script%3E"));$('#cnzz_stat_icon_1254155462').hide();</script>
 </body>
 </html>

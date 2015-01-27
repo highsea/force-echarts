@@ -42,118 +42,111 @@ function randomColor(){
 
 
 //绘图 力导向
-/*测试数据*/
-/*categoryapiLegendArr = {x: 'left',selected:{'11':true,'WebGL':true,"SVG":true,"CSS":true,"Other":true},data:['11','WebGL','SVG','CSS','Other'],orient : 'vertical'}
-categoriesArr = [{"name":"HTMLElement","keyword":[],"base":"HTMLElement","itemStyle":{"normal":{"brushType":"both","color":"#D0D102","strokeColor":"#5182ab","lineWidth":1}}},{"name":"WebGL","keyword":[],"base":"WebGLRenderingContext","itemStyle":{"normal":{"brushType":"both","color":"#00A1CB","strokeColor":"#5182ab","lineWidth":1}}},{"name":"SVG","keyword":[],"base":"SVGElement","itemStyle":{"normal":{"brushType":"both","color":"#dda0dd","strokeColor":"#5182ab","lineWidth":1}}},{"name":"CSS","keyword":[],"base":"CSSRule","itemStyle":{"normal":{"brushType":"both","color":"#61AE24","strokeColor":"#5182ab","lineWidth":1}}},{"name":"Other","keyword":[],"itemStyle":{"normal":{"brushType":"both","strokeColor":"#5182ab","lineWidth":1}}}];
-seriesNodes = [{"name":"AnalyserNode","value":3,"category":1},{"name":"AudioNode","value":1,"category":2},{"name":"Uint8Array","value":2,"category":3},{"name":"Float32Array","value":0,"category":4},{"name":"ArrayBuffer","value":0,"category":4}];
-seriesLinks = [{"source":0,"target":2},{"source":0,"target":4},{"source":1,"target":2},{"source":5,"target":3},{"source":4,"target":4},{"source":5,"target":4}];*/
-/*测试数据*/
 
-var seriesNodes,
+/*var seriesNodes,
     seriesLinks,
     categoriesArr,
-    categoryapiLegendArr;
+    categoryapiLegendArr;*/
 
 function forceOption(categoryapiLegendArr,categoriesArr, seriesNodes, seriesLinks){
 
 
-var  option = {
-    title : {
-        text: '力导向图demo',
-        subtext: '数据来自杜撰',
-        x:'right',
-        y:'bottom'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: '{a} : {b}'
-    },
-    /*toolbox: {
-        show : true,
-        feature : {
-            restore : {show: true},
-            magicType: {
-                show: true,
-                type: ['force', 'chord'],
-                option: {
-                    chord: {
-                        minRadius : 2,
-                        maxRadius : 10,
-                        ribbonType: false,
-                        itemStyle: {
-                            normal: {
-                                label: {
-                                    show: true,
-                                    rotate: true
-                                },
-                                chordStyle: {
-                                    opacity: 0.2
+    var option = {
+        title : {
+            text: '力导向图demo',
+            subtext: '数据来自杜撰',
+            x:'right',
+            y:'bottom'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: '{a} : {b}'
+        },
+        //右上角工具，还原force、保存图表
+        toolbox: {
+            show : true,
+            feature : {
+                restore : {show: true},
+                magicType: {
+                    show: true,
+                    type: ['force', 'chord'],
+                    option: {
+                        chord: {
+                            minRadius : 2,
+                            maxRadius : 10,
+                            ribbonType: false,
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        rotate: true
+                                    },
+                                    chordStyle: {
+                                        opacity: 0.2
+                                    }
+                                }
+                            }
+                        },
+                        force: {
+                            minRadius : 5,
+                            maxRadius : 8,
+                            itemStyle : {
+                                normal : {
+                                    label: {
+                                        show: false
+                                    },
+                                    linkStyle : {
+                                        opacity : 0.5
+                                    }
                                 }
                             }
                         }
-                    },
-                    force: {
-                        minRadius : 5,
-                        maxRadius : 8,
-                        itemStyle : {
-                            normal : {
-                                label: {
-                                    show: false
-                                },
-                                linkStyle : {
-                                    opacity : 0.5
-                                }
+                    }
+                },
+                saveAsImage : {show: true}
+            }
+        },
+        //php curl
+        legend:categoryapiLegendArr,
+
+        isShowScrollBar:false,
+        series: [
+            {
+                type:'kforce',
+                // php curl
+                categories : categoriesArr,
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: true,
+                            textStyle: {
+                                color: '#000000'
                             }
+                        },
+                        nodeStyle : {
+                            brushType : 'both',
+                            strokeColor : 'rgba(255,215,0,0.8)',
+                            lineWidth : 2
+                        }
+                    },emphasis:{
+                        linkStyle : { 
+                        	strokeColor : '#5182AB'
                         }
                     }
-                }
-            },
-            saveAsImage : {show: true}
-        }
-    },*/
-    legend:categoryapiLegendArr,
-/*    legend: {
-        x: 'left',
-        selected:{'HTMLElement':true,'WebGL':true,"SVG":true,"CSS":true,"Other":true},
-        data:['11','WebGL','SVG','CSS','Other'],
-        orient : 'vertical'
-    },*/
-    isShowScrollBar:false,
-    series: [
-        {
-            type:'kforce',
-            categories : categoriesArr,
-            itemStyle: {
-                normal: {
-                    label: {
-                        show: true,
-                        textStyle: {
-                            color: '#000000'
-                        }
-                    },
-                    nodeStyle : {
-                        brushType : 'both',
-                        strokeColor : 'rgba(255,215,0,0.8)',
-                        lineWidth : 2
-                    }
-                },emphasis:{
-                    linkStyle : { 
-                    	strokeColor : '#5182AB'
-                    }
-                }
-            },
-            minRadius : 15,
-            maxRadius : 25,
-            density : 0.8,
-            attractiveness: 0.8,
-            nodes:seriesNodes,
-            links:seriesLinks,
-        }
-    ]
-};
+                },
+                minRadius : 15,
+                maxRadius : 25,
+                density : 0.8,
+                attractiveness: 0.8,
+                //ajax
+                nodes:seriesNodes,
+                links:seriesLinks,
+            }
+        ]
+    };
 
 
-//ajax 加载数据完成 绘制开始
+    //ajax 加载数据完成 绘制开始
 	require_EC();
 
 	function require_EC () {
@@ -166,6 +159,8 @@ var  option = {
 		    function (ec) {
 		    	//确定需要绘制的DOM
 		        setChats(ec);
+
+                //$('#main').children('div').children('canvas').length
 		    }
 		)
 	}
@@ -178,49 +173,6 @@ var  option = {
 		});
 		myChart.setOption(option);
 	}
-	
 
 }
-
-
-// obj 转换
-function obj2str(o){   
-
-    var r = [];   
-
-    if(typeof o =="string") return "\""+o.replace(/([\'\"\\])/g,"\\$1").replace(/(\n)/g,"\\n").replace(/(\r)/g,"\\r").replace(/(\t)/g,"\\t")+"\"";   
-
-    if(typeof o =="undefined") return "";   
-
-    if(typeof o == "object"){   
-
-        if(o===null) return "null";   
-
-        else if(!o.sort){   
-
-            for(var i in o)   
-
-                 r.push(i+":"+obj2str(o[i]))   
-
-             r="{"+r.join()+"}"  
-
-         }else{   
-
-            for(var i =0;i<o.length;i++)   
-
-                 r.push(obj2str(o[i]))   
-
-             r="["+r.join()+"]"  
-
-         }   
-
-        return r;   
-
-     }   
-
-    return o.toString();   
-
-}
-
-  
 

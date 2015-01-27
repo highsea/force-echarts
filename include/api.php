@@ -1,124 +1,71 @@
-<?php 
+<?php
+/**
+*   @author Gao Hai <admin@highsea90.com>
+*   抓取 categoryapi 数据（该数据量较小，使用 session 存储）
+*   
+#数据服务器 
+#60.191.125.156 test.com
+#60.191.125.156 www.test.com
+*/ 
 include 'curl.php';
-include 'file.php';
-
-date_default_timezone_set("prc");  
-$stringtime = date("Y-m-d H:i:s",time());
-//echo "stringtime:".$stringtime;
-$Key = "aabbccdd";
-$timespan = strtotime($stringtime);
-$Sign = md5($timespan.$Key);
 
 $category = curlForce('categoryapi', 'refresh', $timespan, $Sign);
 
+if (!is_string($category)) {
+    $alert = '警告：请确认能访问 '.SEARVER_HOST.'！或者已经开启 CURL！';   
+}else{
+    //捕获接口 data 中数据 string
+    preg_match_all('/(?<=\[)([^\]]*?)(?=\])/' , $category , $_category);
+    //array
+    $categoryArr = json_decode('['.($_category[0][0]).']');
 
+    foreach ($categoryArr as $key => $value) {
 
-
-preg_match_all('/(?<=\[)([^\]]*?)(?=\])/' , $category , $_category);
-
-
-$categoryArr = json_decode('['.($_category[0][0]).']');
-
-
-
-
-foreach ($categoryArr as $key => $value) {
-    //$categories = [];
-    if (is_object($value)) {
-        foreach ($value as $k => $v) {
-            $__newV[] = array(
-                $k=>$v
-            );
+        if (is_object($value)) {
+            foreach ($value as $k => $v) {
+                $__newV[] = array(
+                    $k=>$v
+                );
+            }
         }
-
-        //echo json_encode($__newV);
-    }
-    $categories[] = array(
-        'name'=>$v,
-        'base'=>$v,
-        'itemStyle' => array(
-            'normal' => array(
-                'brushType'=>'both',
-                'color'=>randrgb(),
-                'strokeColor'=>randrgb(),
-                'linewidth'=>1
+        //待优化
+        $categories[] = array(
+            'name'=>$v,
+            'base'=>$v,
+            'itemStyle' => array(
+                'normal' => array(
+                    'brushType'=>'both',
+                    'color'=>randrgb(),
+                    'strokeColor'=>randrgb(),
+                    'linewidth'=>1
+                )
             )
-        )
-    );
+        );
 
+        $categories_base[] = '"'.$v.'"';
 
-/*    $categories_name[] = array(
-        $v => true, 
-
-    );*/
-
-    $categories_base[] = '"'.$v.'"';
+    }
+    // 主要 值
+    $_SESSION['categoriesArr'] = json_encode($categories);
+    $_SESSION['categoryapiLegendArr'] = '{"x":"left","selected":{'.implode(':true,', $categories_base).':true},"data":['.implode(',', $categories_base).'],"orient":"vertical"}';
+    //$categoriesArr = json_encode($categories);
+    //$categoryapiLegendArr = '{"x":"left","selected":{'.implode(':true,', $categories_base).':true},"data":['.implode(',', $categories_base).'],"orient":"vertical"}';
 
 }
 
-$categoriesArr = json_encode($categories);
-
-//
-//var_dump(('{'.implode(':true,', $categories_base).':true}'));
-
-//var_dump(($categories_base));
-
-
-/*var_dump($categories_name);
-var_dump($categories_base);*/
-
-//preg_match_all("/(?:\[\{)(.*)(?:\}\])/i", json_encode($categories_name), $cate_name);
-//preg_match_all("/(?:\[\[)(.*)(?:\]\])/i", json_encode($categories_base), $cate_base);
-
-
-/*$categoryLegend = array(
-    'x'=>'left',
-    'selected'=>'{'.implode(':true,', $categories_base).':true}',
-    'data'=>$categories_base,
-    //'data'=>explode('],[', $cate_base[1][0]),
-    'orient'=>'vertical'
-);
+/**
+* 包含 curlForce 爬虫、randrgb 随机色
+* 
 */
 
-
-//$categoryapiLegendArr = json_encode($categoryLegend);
-
-
-$categoryapiLegendArr = '{"x":"left","selected":{'.implode(':true,', $categories_base).':true},"data":['.implode(',', $categories_base).'],"orient":"vertical"}';
-
-//var_dump($categoryapiLegendArr);
-
-/*categoryapiLegendArr = {
-                x: 'left',
-                //selected:categoryapiLegendSelected,
-                data:categoryapiLegendData,
-                orient : 'vertical'
-            }*/
-
-
-
-/*$names = array();  
-$names = array_reduce($categoryArr, create_function('$v,$w', '$v[$w["id"]]=$w["name"];return $v;'));  
-
-var_dump($names);*/
-
-/*foreach ($categoryArr as $key => $value) {
-    echo $value;
-}*/
-
-/*if(preg_match("/[(][.][)]/",$string,$matches)){   
-   echo $matches;   
-}   */
-
-
-
+//curl
 function curlForce ($urlType, $refresh, $timespan, $Sign){
 
     $fetch = new Curl();
-    $apiurl = "http://test.com/".$urlType."/?&cache=".$refresh."&timespan=".$timespan."&sign=".$Sign."&callback=category";
+    $apiurl = SEARVER_HOST.$urlType."/?&cache=".$refresh."&timespan=".$timespan."&sign=".$Sign."&callback=category";
     return $fetch->get($apiurl);
 }
-
+// 颜色随机 1
 function randomColor(){
     mt_srand((double)microtime()*1000000);
     $c = '';
@@ -127,7 +74,7 @@ function randomColor(){
     }
     return '#'.$c;
 }
-
+// 颜色随机 2
 function randrgb(){  
   $str='0123456789ABCDEF';  
     $estr='#';  
@@ -139,6 +86,5 @@ function randrgb(){
     }  
     return $estr;  
 } 
-//echo randomColor();
 
 ?>
