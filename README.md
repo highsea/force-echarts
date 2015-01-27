@@ -15,4 +15,4 @@
 
 ![快速预览][1]
 
-[1]: "images/view.gif" 				"快速预览"
+[1]: https://raw.githubusercontent.com/highsea/force-echarts/master/images/view.gif 				"快速预览"
