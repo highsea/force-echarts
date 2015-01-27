@@ -17,7 +17,7 @@ include 'include/api.php';
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta charset="UTF-8">
-<title>ECharts之force力导向布局图</title>
+<title>力导向布局图</title>
 <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="css/bootstrap/css/bootstrap-theme.min.css"> -->
 <link rel="stylesheet" href="css/datetimepicker/bootstrap-datetimepicker.min.css">
@@ -32,9 +32,9 @@ include 'include/api.php';
     <div class="row">
         <div class="bs-callout bs-callout-info span12">
             <div class="span4">
-                <h4>复杂网络节点展示（力导向图）</h4>
-                <p>for 民生银行</p>
-                <p>by miningdata</p>
+                <h4>力导向图</h4>
+                <p>for 复杂网络节点</p>
+                <p>by <i class="icon-inbox"></i> <a href="https://github.com/highsea/">highsea</a> </p>
             </div>
             <div class="span6">
                 <p>PHP.ini 请开启 curl 模块，<span class="label label-info">并在服务端</span> 对 hosts 做如下修改：</p>
@@ -90,7 +90,7 @@ include 'include/api.php';
 
             <div class="bs-callout bs-callout-danger">
                 <h4><i class="icon-fire"></i> V1.0.1将要优化</h4>
-                <p> <code>localstorage</code>  、<code>ajax</code> 并发、系统自定义参数设置</p>
+                <p> <code>localstorage</code>  、<code>ajax伪并发</code> 、系统 <code>自定义参数</code> 设置</p>
             </div>
 
 

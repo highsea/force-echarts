@@ -60,7 +60,7 @@ function forceOption(categoryapiLegendArr,categoriesArr, seriesNodes, seriesLink
 var  option = {
     title : {
         text: '力导向图demo',
-        subtext: '数据来自Echarts--by highsea',
+        subtext: '数据来自杜撰',
         x:'right',
         y:'bottom'
     },
@@ -174,7 +174,7 @@ var  option = {
 		var myChart = ec.init(document.getElementById('main'));
 		// 过渡---------------------
 		myChart.showLoading({
-		    text: '正在努力的读取数据中...',    //loading话术
+		    text: '正在玩命加载中...',    //loading话术
 		});
 		myChart.setOption(option);
 	}
