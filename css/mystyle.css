@@ -17,5 +17,9 @@
 .bs-callout-info {border-left-color: #1b809e;}
 .bs-callout-info p,.footer p{margin: 1px 0}
 
+.bs-callout-danger {
+border-left-color: #ce4844;
+}
+
 /* 图表 */
 #main{border: 1px solid #eee;}

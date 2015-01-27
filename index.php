@@ -37,11 +37,16 @@ include 'include/api.php';
                 <p>by miningdata</p>
             </div>
             <div class="span6">
-                <p>PHP请开启 curl 模块，<span class="label label-info">并在服务端</span> 对 hosts 做如下修改：</p>
+                <p>PHP.ini 请开启 curl 模块，<span class="label label-info">并在服务端</span> 对 hosts 做如下修改：</p>
                 <p>60.191.125.156 test.com</p>
                 <p>60.191.125.156 www.test.com</p>
-                <p>版本号 v1.0.0 ：当前支持 时间+分类查询 </p>
-                <p>下载 <a href="testapi.com.rar">轻点这里 </a> <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=644494365&amp;site=qq&amp;menu=yes" title="提需求" target="_blank"> 点这里提需求</a></p>
+                <p><i class="icon-fire"></i> 版本号 v1.0.0 ：当前功能支持 <code>时间</code> <code>分类</code> 查询 </p>
+                <p> 
+                    <a href="https://github.com/highsea/force-echarts/archive/master.zip" > <i class="icon-retweet"></i> download </a> 
+                    <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=644494365&amp;site=qq&amp;menu=yes" title="提需求" target="_blank"> <i class="icon-comment"></i> QQ </a>
+                    <a href="https://github.com/highsea/force-echarts/issues"> <i class="icon-edit"></i> issues </a>
+                    <a href="https://github.com/highsea/force-echarts/fork"> <i class="icon-eye-open"></i> fork</a>
+                </p>
                 
             </div>
 
@@ -81,7 +86,14 @@ include 'include/api.php';
     </ul>
 </div> -->
         <div class="row footer">
-            <p> <i class="icon-fire"></i> V1.0.1将要优化：localstorage、ajax并发、系统自定义参数设置</p>
+
+
+            <div class="bs-callout bs-callout-danger">
+                <h4><i class="icon-fire"></i> V1.0.1将要优化</h4>
+                <p> <code>localstorage</code>  、<code>ajax</code> 并发、系统自定义参数设置</p>
+            </div>
+
+
         </div>
     </div>
 </div>
