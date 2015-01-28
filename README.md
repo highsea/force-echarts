@@ -15,4 +15,4 @@
 
 ![快速预览][1]
 
-[1]: https://raw.githubusercontent.com/highsea/force-echarts/master/images/view.gif 				"快速预览"
+[1]: http://images.cnitblog.com/blog/531703/201501/271722234258301.gif 	"快速预览"
