@@ -22,4 +22,15 @@ border-left-color: #ce4844;
 }
 
 /* 图表 */
-#main{border: 1px solid #eee;}
+#main{height: 800px; border: 1px solid #ccc; padding: 10px;}
+
+.select-something{min-height: 180px;}
+.installmentsapi li {float: left;margin: 0 1em}
+.nav-tabs{margin: 0}
+.tabbable a{cursor:pointer;}
+/* 选择 数量*/
+/* .pagination-circle li{float: left;} */
+
+
+
+

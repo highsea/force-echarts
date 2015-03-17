@@ -8,31 +8,18 @@
 #60.191.125.156 test.com
 #60.191.125.156 www.test.com
 */ 
-session_start();
-define("SEARVER_HOST","http://60.191.125.156/");
+
+define("SEARVER_HOST","http://testapi.miningdata.com.cn/");
 date_default_timezone_set("prc");  
 $stringtime = date("Y-m-d H:i:s",time());
 $Key = "aabbccdd";
 $timespan = strtotime($stringtime);
 $Sign = md5($timespan.$Key);
-$categoriesArr=0;
-$categoryapiLegendArr=0;
-$alert = '';
 
-$cache = isset($_GET['cache'])?$_GET['cache']:'yes';
+//include './include/api.php';
+//phpexcel
 
-if (!$_SESSION['categoriesArr']||!$_SESSION['categoryapiLegendArr']) {
-    include 'include/api.php';
-}elseif($cache=='refresh'){
-    include 'include/api.php';
-    $categoryapiLegendArr = $_SESSION['categoryapiLegendArr'];
-    $categoriesArr = $_SESSION['categoriesArr'];
 
-}else{
-    $categoryapiLegendArr = $_SESSION['categoryapiLegendArr'];
-    $categoriesArr = $_SESSION['categoriesArr'];
-
-}
 
 ?>
 <!DOCTYPE html>
@@ -40,99 +27,149 @@ if (!$_SESSION['categoriesArr']||!$_SESSION['categoryapiLegendArr']) {
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta charset="UTF-8">
-<title>力导向布局图</title>
+<title>顶层商户 枢纽节点展示页</title>
 <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="css/bootstrap/css/bootstrap-theme.min.css"> -->
-<link rel="stylesheet" href="css/datetimepicker/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="css/mystyle.css">
 </head>
 <body>
 
-<div class="container" id="content">
 
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <h3 class="text-center">
+                顶层商户 枢纽节点展示页
+            </h3>
+            <div class="tips"></div>
 
+            <div class="row-fluid select-something">
+                <div class="span6">
+                    <div class="tabbable" id="tabs-114976">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a data-toggle="tab" href="#panel-1">商户选择</a>
+                            </li>
+                            <li class="ajax_installments">
+                                <a data-toggle="tab" href="#panel-2">可选期数</a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#panel-3">枢纽节点数目</a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
 
-    <div class="row">
-        <div class="bs-callout bs-callout-info span12">
-            <div class="span4">
-                <h4>力导向图</h4>
-                <p>for 复杂网络节点</p>
-                <p>by <i class="icon-inbox"></i> <a href="https://github.com/highsea/">highsea</a> </p>
-                <button id="refreshBTN" type="button" class="btn btn-danger"> 刷新缓存 </button>
+                            <div data-father="allinformationapi" class="tab-pane active" id="panel-1">
+                                <section class="span6">
+                                    <h5>按枢纽商户</h5>
+                                    <ul class="choose-type">
+                                        <li>
+                                            <a data-type="amount">按交易规模</a>
+                                        </li>
+                                        <li>
+                                            <a data-type="degree">按商户活跃度</a>
+                                        </li>
+                                    </ul>
+                                </section>
+                                <section class="span6">
+                                    <h5>按顶层商户</h5>
+                                    <ul class="choose-type">
+                                        <li>
+                                            <a data-type="betweennesss">按商户紧密度</a>
+                                        </li>
+                                        <li>
+                                            <a data-type="closeness">按商户关键性</a>
+                                        </li>
+                                    </ul>
+                                </section>
+
+                            
+                            </div>
+                            <div data-father="installments" class="tab-pane" id="panel-2">
+                                <ul class="installmentsapi choose-type">
+                                    
+                                </ul>
+                            </div>
+                            <div class="tab-pane" id="panel-3">
+                                <div data-father="pagecount" class="pagination">
+                                <ul class="choose-type">
+                                    <li>
+                                         <a data-type="10">10</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="20">20</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="30">30</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="40">40</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="50">50</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="60">60</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="70">70</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="80">80</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="90">90</a>
+                                    </li>
+                                    <li>
+                                         <a data-type="100">100</a>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="row-fluid">
+                        <div class="span8">
+                            <div class="tab-pane" id="panel-4">
+                                <h5>您选择了</h5>
+                                <ul>
+                                    <li class="allinformationapi_type">商户选项：<a data-type="" data-toggle="tab" href="#panel-1">去选择</a></li>
+                                    <li class="installments_type">期数选项：<a data-type="" data-toggle="tab" href="#panel-2">去选择</a></li>
+                                    <li class="pagecount_type">节点选项：<a data-type="" data-toggle="tab" href="#panel-3">去选择</a></li>
+                                </ul>
+                                <button class="btn btn-success start-force" type="button">开始绘图</button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <button class="btn btn-info" type="button">导出客户号 </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="span6">
-                <p>PHP.ini 请开启 curl 模块，<span class="label label-info">并在服务端</span> 对 hosts 做如下修改：</p>
-                <p>60.191.125.156 test.com</p>
-                <p>60.191.125.156 www.test.com</p>
-                <p><i class="icon-fire"></i> 版本号 v1.0.0 ：当前功能支持 <code>时间</code> <code>分类</code> 查询 </p>
-                <p> 
-                    <a href="https://github.com/highsea/force-echarts/archive/master.zip" > <i class="icon-retweet"></i> download </a> 
-                    <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=644494365&amp;site=qq&amp;menu=yes" title="提需求" target="_blank"> <i class="icon-comment"></i> QQ </a>
-                    <a href="https://github.com/highsea/force-echarts/issues"> <i class="icon-edit"></i> issues </a>
-                    <a href="https://github.com/highsea/force-echarts/fork"> <i class="icon-eye-open"></i> fork</a>
-                </p>
-                
+            <div class="row-fluid">
+                <div class="span12">
+                    <div id="main">
+                    </div>
+                </div>
             </div>
-
-        </div>
-        <div class="row">
-            <div class="span1"><span>选择时间</span></div>
-            <div id="datetimepicker" class="input-append date span3">
-                
-                <input id="select_time" type="text" class="span2" value="2015/01"></input>
-                <span class="add-on">
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                </span>
-            </div>
-            <div class="span1"><span>选择分类</span></div>
-            <div class="span4">
-                <select id="search_type" class="span2">
-                    <option value="linknum">交易频率</option>
-                    <option value="nodeamount">交易金额数</option>
-                    <option value="betweennesss">betweennesss值</option>
-                    <option value="k-core">k-core值</option>
-                </select>
-            </div>
-            <div class="span2">
-                <button id="ajaxSearch" type="button" class="btn btn-primary"> 查 询 </button>
-            </div>
-        </div>
-    </div>
-    <div class="row forcePic">
-        <div id="main" style="height:800px" class="span12"></div>
-<!--         <div class="span12">
-    <span>查看商户列表</span>
-    <ul>
-        <li>商户基本信息</li>
-        <li>商户基本信息</li>
-        <li>商户基本信息</li>
-
-    </ul>
-</div> -->
-        <div class="row footer">
-
-
-            <div class="bs-callout bs-callout-danger">
-                <h4><i class="icon-fire"></i> V1.0.1将要优化</h4>
-                <p> <code>localstorage</code>  、<code>ajax伪并发</code> 、系统 <code>自定义参数</code> 设置</p>
-            </div>
-
-
         </div>
     </div>
 </div>
 
+
+
+
+
 <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="css/bootstrap/js/bootstrap.min.js"></script>
-<script src="css/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script src="js/esl.js"></script>
-<script src="js/store1.1.1.min.js"></script>
+<!-- <script src="js/store1.1.1.min.js"></script> -->
 <script src="js/myFunction.js"></script>
 <script type="text/javascript">
-//立即获取分类
-//ajaxForce ('categoryapi', 0, 0, 'refresh', 0);
-//分类 部分由 php curl 获取
-
 //echarts zrender 模块化配置
 require.config({
     packages: [
@@ -161,29 +198,6 @@ function initStore() {
     }
 }
 */
-//时间控件
-$('#datetimepicker').datetimepicker({
-    format: 'yyyy/MM',//'MM/dd/yyyy hh:mm'
-    language: 'en',
-    pickDate: true,
-    //pickTime: true,
-    //hourStep: 1,
-    //minuteStep: 15,
-    //secondStep: 30,
-    inputMask: true,
-    autoclose: true
-});
-
-
-
-if (store.get('categoryapiLegendArr')==undefined||store.get('categoriesArr')==undefined||store.get('categoryapiLegendArr')==0||store.get('categoriesArr')==0) {
-    store.set('categoryapiLegendArr', <?=$categoryapiLegendArr ?>);
-    store.set('categoriesArr', <?=$categoriesArr ?>);  
-
-}
-
-var categoryapiLegendArr = store.get('categoryapiLegendArr'),
-    categoriesArr = store.get('categoriesArr');
 
 
 //console.log(store.get('categoryapiLegendArr'));
@@ -191,91 +205,166 @@ var categoryapiLegendArr = store.get('categoryapiLegendArr'),
 
 
 
-//点击查询
-$('#ajaxSearch').on('click',function(){
+//验证绘图数据
+$('.start-force').on('click',function(){
 
-    var gaohai = store.get('gaohai'),
-        seriesNodes = store.get('nodesapiArr'),
-        seriesLinks = store.get('linksapiArr');
+    var pagecount_num = $('.pagecount_type > a').data('type'),
+        allinformationapi_type = $('.allinformationapi_type > a').data('type'),
+        installments_time = $('.installments_type > a').data('type');
 
-    var search_type = $('#search_type').val(),
-        select_time = $('#select_time').val();
-    userSelectTime = time_unix (select_time);
+    if (pagecount_num!=''&&allinformationapi_type!=''&installments_time!='') {
 
-var hostError = '<?=$alert ?>';
+        //console.log(pagecount_num+allinformationapi_type+installments_time);
+        //开始绘图
+        var ajaxDataArr = {
+            type            : allinformationapi_type,
+            installments    : installments_time,
+            pagecount       : pagecount_num
+        }
+        ajaxForce ('allinformationapi', ajaxDataArr, function(dataList){
 
-if (!hostError=='') {
+            //console.log('links:'+dataList.data.links+'；nodes:'+dataList.data.nodes);
+            var categoryapiLegendArr = {
+                    data : categoryapiLegenddata,
+                    selected:$.parseJSON('{'+shangquan.join(',')+'}'),
+                    orient : 'vertical',
+                    x : 'left'
+                };
 
-    alert(hostError);
+            //console.log(dataList.data.nodes.length);
+            //console.log(dataList.data.links.length);
 
-}else if (seriesNodes==undefined||seriesLinks==undefined) {
+            //console.log(categoryapiLegendArr);
 
-    setTimeout(function(){ ajaxForce('nodesapi', search_type, userSelectTime, 'refresh')}, 0 );
-    setTimeout(function(){ ajaxForce('linksapi', search_type, userSelectTime, 'refresh')}, 300 );
+            var d = dataList.data.nodes;
+            var nodesArr = [];
 
-    //setTimeout(function(){ forceOption (categoryapiLegendArr, categoriesArr, seriesNodes, seriesLinks)}, 1500 );
+            for (var i = 0; i < d.length; i++) {
+                var category = d[i].category,
+                    name = d[i].name,
+                    value = d[i].value;
+                    strArr = {
+                        "name"      : name,
+                        "category"  : category,
+                        "value"     : value,
+                        onclick     : function(params){
+                                        var thisText = params.target.style.text;
+                                        //thisText = "去看"+thisText+"的客户信息";
+                                        if (top.location == self.location){
+                                            
+                                            window.open('public/user.php?user='+params.target.style.text, thisText, 'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+                                        }
+                                        
+                                    }
+                    };
+                nodesArr.push(strArr);
+            };
+            //console.log($.parseJSON(nodesArr));
+            //+',"onclick":function(params){alert(params.target.style.text);}'
+            //console.log(nodesArr);
 
-    //console.log('seriesNodes==undefined||seriesLinks==undefined');
-    //forceOption (categoryapiLegendArr, categoriesArr, seriesNodes, seriesLinks);
 
-}else{
+            forceOption(categoryapiLegendArr, categoriesArr, nodesArr, dataList.data.links)
+        })
+    }else{
+        alertHtml('alert-warning', '注意：', '貌似您还没选择完呢！');
+    }
 
-    //console.log(categoriesArr+':'+categoryapiLegendArr);
-    forceOption (categoryapiLegendArr, categoriesArr, seriesNodes, seriesLinks);
+});
 
-};
+var  installmentsapi = $('.installmentsapi');
+// 获取 组合数值
+$('.tabbable').on('click', '.choose-type > li', function(){
+    //console.log($(this).find('a').text()+'，分类：'+$(this).find('a').data('type'));
+    //console.log($('.'+$(this).closest('div').data('father')+'_type > a'));
 
-    
+    $('.'+$(this).closest('div').data('father')+'_type > a').data('type', $(this).find('a').data('type')).text($(this).find('a').text());
 
+})
+//可选期数
+$('.ajax_installments,.installments_type').on('click', function() {
+
+    if (installmentsapi.find('li').length==0) {
+
+        ajaxForce ('installmentsapi', {}, function(dataList){
+            var d = dataList.data;
+            for (var i = 0; i < d.length; i++) {
+                var datatime = d[i],
+                    str = '<li><a data-type="'+datatime+'">'+datatime+'</a></li>';
+                installmentsapi.append(str);
+            }
+        }) 
+    };
 
 });
 
 
 //ajax
-function ajaxForce (urlType, search_type, userSelectTime, refresh) {
+function ajaxForce (urlType, data, callback) {
 
     jQuery.ajax({
         type  : "get",
         async : false,
-        url : '<?=SEARVER_HOST ?>'+urlType+'/',
+        url : '<?=SEARVER_HOST ?>'+urlType+'/?sign=<?=$Sign ?>&timespan=<?=$timespan ?>',
         dataType : "jsonp",
         jsonp : "callback",
-        data : {
-            type:search_type,
-            cache:refresh,
-            timespan:"<?=$timespan ?>",
-            time:userSelectTime,
-            sign:"<?=$Sign ?>"
-        },
+        data : data,
         jsonpCallback : "dataList",
         success : function(dataList){
-            //return dataList.data;
-            if (dataList.data!=null) {
-
-                store.set(urlType, urlType+'-ajax-OK');
-                store.set(urlType+'Arr', dataList.data);
-                //console.log(store.get(urlType));
-                //console.log(store.get(urlType+'Arr'));
-
-                if (typeof(cbfunction)=='function') {
-                    setTimeout("cbfunction()",500);
-                    //cbfunction();
-                }else{
-                    //console.log(cbfunction);
-                };
-            };
+            if (dataList.code==1000) {
+                
+                callback(dataList);
+            }else{
+                alertHtml('alert-info', dataList.message, '错误代码：'+dataList.code);
+            }
         },
         error: function(){
-            alert(urlType+'网络错误！请刷新重试！')
+            alertHtml('alert-error', '网络错误', '请检查您的网络是否能正确访问：<?=SEARVER_HOST ?>');
         }
     });
 }
 
-$('#refreshBTN').on('click', function(){
-    store.clear();
-    //呵呵
-    window.location.href="./?cache=refresh";
+
+//获取 categories
+var categoriesArr = [],
+    categoryapiLegenddata = [],
+    shangquan = [];
+
+ajaxForce ('categoryapi', {}, function(dataList){
+
+    var d = dataList.data;
+
+    //console.log(d);
+    //console.log(d.length);
+
+    for (var i = 0; i < d.length; i++) {
+
+        var Arr = {
+            "name"      : d[i].name,
+            "keyword"   : {},
+            "base"      : d[i].base,
+            "itemStyle" : {
+                "normal": {
+                    "brushType"     : "both",
+                    "color"         : randomColor(),
+                    "strokeColor"   : randomColor(),
+                    "lineWidth"     : 1
+                }
+            }
+        },
+            str = '"'+d[i].name+'":true'; 
+
+
+        categoriesArr.push(Arr);
+        categoryapiLegenddata.push(d[i].name);
+        shangquan.push(str);
+    }
+    //console.log(categoriesArr);
+    //console.log($.parseJSON('{'+shangquan.join(',')+'}'));
 })
+
+
+
 
 </script>
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254155462'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1254155462' type='text/javascript'%3E%3C/script%3E"));$('#cnzz_stat_icon_1254155462').hide();</script>

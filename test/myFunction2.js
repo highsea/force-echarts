@@ -59,7 +59,7 @@ function forceOption(categoryapiLegendArr, categoriesArr, seriesNodes, seriesLin
     var option = {
         title : {
             text: '力导向图demo',
-            subtext: '数据来自杜撰',
+            subtext: '数据来自杜撰2',
             sublink: "http://www.miningdata.com.cn/",
             x:'right',
             y:'bottom'

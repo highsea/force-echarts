@@ -9,15 +9,112 @@
 */ 
 include 'curl.php';
 
-$category = curlForce('categoryapi', 'refresh', $timespan, $Sign);
+define("SEARVER_HOST","http://testapi.miningdata.com.cn/");
+date_default_timezone_set("prc");  
+$stringtime = date("Y-m-d H:i:s",time());
+$Key = "aabbccdd";
+$timespan = strtotime($stringtime);
+$Sign = md5($timespan.$Key);
+
+
+
+
+
+
+
+
+
+
+//引入PHPExcel库文件（路径根据自己情况）
+include './../phpexcel/PHPExcel.php';
+//创建对象
+$excel = new PHPExcel();
+$objDrawing = new PHPExcel_Worksheet_Drawing();
+/*设置文本对齐方式*/
+$excel->getDefaultStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+$excel->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+$objActSheet = $excel->getActiveSheet();
+$letter = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N');
+/*设置表头数据*/
+$tableheader = array('序号','客户号','分类','value');
+/*填充表格表头*/
+for($i = 0;$i < count($tableheader);$i++) {
+	$excel->getActiveSheet()->setCellValue("$letter[$i]1","$tableheader[$i]");
+}
+
+/*设置表格数据*/
+$data = array(
+	array('0', '15158106748', '9', '2'),
+	array('1', '12345678901', '8', '4'),
+	array('2', '98765432103', '4', '6'),
+	array('3', '75395165485', '6', '9'),
+	array('4', '96374185202', '2', '10')
+);
+
+
+/*填充表格内容*/
+for ($i = 0;$i < count($data);$i++) {
+	$j = $i + 2;
+	/*设置表格宽度*/
+	$objActSheet->getColumnDimension("$letter[$i]")->setWidth(30);
+	/*设置表格高度*/
+	$excel->getActiveSheet()->getRowDimension($j)->setRowHeight(25);
+	/*向每行单元格插入数据*/
+	//for ($row = 0;$row < count($data[$i]);$row++) {
+
+		//$excel->getActiveSheet()->setCellValue("$letter[$row]$j", '$data[$i]');
+	//}
+	foreach ($data as $item) {
+
+		$excel->getActiveSheet()->setCellValue("$letter[$j]", $item[0]);
+	}
+}
+
+
+/*实例化excel输入类并完成输出excel文件*/
+$write = new PHPExcel_Writer_Excel5($excel);
+header("Pragma: public");
+header("Expires: 0");
+header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+header("Content-Type:application/force-download");
+header("Content-Type:application/vnd.ms-execl");
+header("Content-Type:application/octet-stream");
+header("Content-Type:application/download");;
+header('Content-Disposition:attachment;filename="测试文件.xls"');
+header("Content-Transfer-Encoding:binary");
+$write->save('php://output');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$category = curlForce('allinformationapi', $timespan, $Sign);
 
 if (!is_string($category)) {
     $alert = '警告：请确认能访问 '.SEARVER_HOST.'！或者已经开启 CURL！';   
 }else{
     //捕获接口 data 中数据 string
     preg_match_all('/(?<=\[)([^\]]*?)(?=\])/' , $category , $_category);
+
+
     //array
     $categoryArr = json_decode('['.($_category[0][0]).']');
+
+
+    var_dump('<pre>');
+    var_dump($categoryArr);
+
 
     foreach ($categoryArr as $key => $value) {
 
@@ -28,63 +125,22 @@ if (!is_string($category)) {
                 );
             }
         }
-        //待优化
-        $categories[] = array(
-            'name'=>$v,
-            'base'=>$v,
-            'itemStyle' => array(
-                'normal' => array(
-                    'brushType'=>'both',
-                    'color'=>randrgb(),
-                    'strokeColor'=>randrgb(),
-                    'linewidth'=>1
-                )
-            )
-        );
-
-        $categories_base[] = '"'.$v.'"';
+       
 
     }
-    // 主要 值
-    $_SESSION['categoriesArr'] = json_encode($categories);
-    $_SESSION['categoryapiLegendArr'] = '{"x":"left","selected":{'.implode(':true,', $categories_base).':true},"data":['.implode(',', $categories_base).'],"orient":"vertical"}';
-    //$categoriesArr = json_encode($categories);
-    //$categoryapiLegendArr = '{"x":"left","selected":{'.implode(':true,', $categories_base).':true},"data":['.implode(',', $categories_base).'],"orient":"vertical"}';
 
 }
 
 /**
-* 包含 curlForce 爬虫、randrgb 随机色
+* 包含 curlForce 爬虫
 * 
 */
-
-//curl
-function curlForce ($urlType, $refresh, $timespan, $Sign){
+function curlForce ($urlType, $timespan, $Sign){
 
     $fetch = new Curl();
-    $apiurl = SEARVER_HOST.$urlType."/?&cache=".$refresh."&timespan=".$timespan."&sign=".$Sign."&callback=category";
+    $apiurl = SEARVER_HOST.$urlType."/?&timespan=".$timespan."&sign=".$Sign."&callback=category";
     return $fetch->get($apiurl);
 }
-// 颜色随机 1
-function randomColor(){
-    mt_srand((double)microtime()*1000000);
-    $c = '';
-    while(strlen($c)<6){
-        $c .= sprintf("%02X", mt_rand(0, 255));
-    }
-    return '#'.$c;
-}
-// 颜色随机 2
-function randrgb(){  
-  $str='0123456789ABCDEF';  
-    $estr='#';  
-    $len=strlen($str);  
-    for($i=1;$i<=6;$i++)  
-    {  
-        $num=rand(0,$len-1);    
-        $estr=$estr.$str[$num];   
-    }  
-    return $estr;  
-} 
+
 
 ?>
