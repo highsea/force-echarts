@@ -60,13 +60,12 @@ for ($i = 0;$i < count($data);$i++) {
 	/*设置表格高度*/
 	$excel->getActiveSheet()->getRowDimension($j)->setRowHeight(25);
 	/*向每行单元格插入数据*/
-	//for ($row = 0;$row < count($data[$i]);$row++) {
+	for ($row = 0;$row < count($data[$i]);$row++) {
 
-		//$excel->getActiveSheet()->setCellValue("$letter[$row]$j", '$data[$i]');
-	//}
-	foreach ($data as $item) {
-
-		$excel->getActiveSheet()->setCellValue("$letter[$j]", $item[0]);
+		$excel->getActiveSheet()->setCellValue("$letter[$row]$j", '$data[$i]');
+	}
+	foreach ($variable as $item) {
+		# code...
 	}
 }
 

@@ -31,6 +31,10 @@ $Sign = md5($timespan.$Key);
 <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="css/bootstrap/css/bootstrap-theme.min.css"> -->
 <link rel="stylesheet" href="css/mystyle.css">
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.0/css/jquery.dataTables.css">
+
+
 </head>
 <body>
 
@@ -165,7 +169,11 @@ $Sign = md5($timespan.$Key);
 
 
 <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+
 <script src="css/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.0/js/jquery.dataTables.js"></script>
 <script src="js/esl.js"></script>
 <!-- <script src="js/store1.1.1.min.js"></script> -->
 <script src="js/myFunction2.js"></script>
