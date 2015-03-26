@@ -222,6 +222,34 @@ include './include/config.php';
 						<h3>
 							风险监测
 						</h3>
+<!-- 风险监测 table	 -->
+<div class="row-fluid">
+
+	<div class="span6">
+		选择期次：
+		<select class="span6 search_date_fxjc">
+		</select>
+	</div>
+	
+	<div class="span6">
+		<a class="btn btn-success start-fxjc">查询</a>
+		<a class="btn btn-prim">导出数据</a>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<div class="span12 fxjc_date"></div>
+	<div class="span12">
+		<table id="fxjc_table">
+			
+		</table>
+	</div>
+
+
+</div>
+
+<!-- 风险 end  -->
+
 					</section>
 					<section data-html="other-fn" class="none">
 						<h3>
@@ -284,7 +312,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 	//console.log($(this).closest('.accordion-group').data('choice'));
 
 	//加载期数
-	//if (search_date.find('option').length==0) {
+	if ($('.search_date').find('option').length==0) {
 
 		ajaxForce ('installmentsapi', $('.search_date'), {}, function(dataList){
 			search_date.html('');
@@ -295,7 +323,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 				search_date.append(str);
 			}
 		}) 
-	//};
+	};
 
 	//设置 统一文字／显示
 	section_show = $('[data-html='+$(this).closest('.accordion-group').data('choice')+']');
@@ -313,15 +341,92 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 		search_type.data('marketing', 'top');
 
 	} else if (this_text=='风险监测') {
-		alert('接口未找到，或 还未开发')
+		//alert('接口未找到，或 还未开发')
+		if ($('.search_date_fxjc').find('option').length==0) {
+
+			ajaxForce ('RiskInstallments', $('.search_date_fxjc'), {}, function(dataList){
+				var d = dataList.data;
+				for (var i = 0; i < d.length; i++) {
+					var datatime = d[i],
+					    str = '<option><a data-type="'+datatime+'">'+datatime+'</a></option>';
+					$('.search_date_fxjc').append(str);
+				}
+			})
+
+		};
+
 	} else{
-		alert('未知错误！')
+		alert('未知错误！');
 
 	}
 
 });
 
 
+//查询 风险监测
+$('.start-fxjc').on('click', function() {
+	
+	var data_choice = $('.search_date_fxjc').val();
+	//alert('请赶紧提供 风险监测 API；另外 客户风险监测表格 放哪里')
+	if (data_choice&&$('#fxjc_table').find('td').length==0) {
+
+		$('.fxjc_date').html('<?=LOADING ?>');
+
+		ajaxForce ('RiskWarningInformationapi', $('#fxjc_table'), {installments:data_choice}, function(dataList){
+
+			$('.fxjc_date').html('<p>数据时间：'+dataList.data.datatime[0]+'到'+dataList.data.datatime[1]+'</p>');
+			var l = dataList.data.data,
+				dataArr = [];
+
+			for (var i = 0; i < l.length; i++) {
+
+				var kehuhao 	= l[i].HOST_CUST_ID,
+				    mingcheng = l[i].CUST_NAME,
+				    shoujihao 	= l[i].MOBILE_NUM,
+				    shangquanming = l[i].categoryName,
+				    guishuzhihang = l[i].FIRST_OPEN_ACCT_DT,
+					huankuankayue  = l[i].REPAY_CARD_BAL,
+					daikuanyue = l[i].REMAIN_PRIN,
+					danbaofangshi = l[i].GUAR_MODE_CD,
+					daoqishijian = l[i].MATURE_DT,
+					biaozhi = biaozhiArr[l[i].Marked];
+
+				var dataString = {
+					"clent_id" 	: '<a target="_blank" href="./public/user.php?user='+kehuhao+'&marketing=fengxian">'+kehuhao+'</a>',
+					"name" 	: mingcheng,
+					"phone_num" : shoujihao,
+					"categoryName" 	: shangquanming,
+					"guishuzhihang" : guishuzhihang,
+					"huankuankayue"	: huankuankayue,
+					"daikuanyue"	: daikuanyue,
+					"danbaofangshi" : danbaofangshi,
+					"daoqishijian" : daoqishijian,
+					"biaozhi" : biaozhi
+				};
+
+				dataArr.push(dataString);
+			};
+
+			data_tb_Arr = [
+			    {data : 'clent_id'},
+			    {data : 'name'},
+			    {data : 'phone_num'},
+			    {data : 'categoryName'},
+			    {data : 'guishuzhihang'},
+			    {data : 'huankuankayue'},
+			    {data : 'daikuanyue'},
+			    {data : 'danbaofangshi'},
+			    {data : 'daoqishijian'},
+			    {data : 'biaozhi'}
+			]
+
+		install_TB('fxjc_table', dataArr, data_tb_Arr, '<thead><tr><th>客户号</th><th>名称</th><th>手机号</th><th>商圈</th><th>归属支行</th><th>还款卡上余额</th><th>贷款余额</th><th>担保方式</th><th>贷款到期时间</th><th>标识</th></tr></thead><tbody></tbody>');
+
+		})
+
+	};
+	
+});
 
 
 
@@ -500,16 +605,16 @@ $('.start-force').on('click',function(){
 					name = d[i].name,
 					value = d[i].value;
 					strArr = {
-						"name" 		: name,
+						"name" 		: '',//name
 						"category" 	: category,
 						"value" 	: value,
 						onclick 	: function(params){
-										var thisText = params.target.style.text;
-										thisText = "去看"+thisText+"的客户信息";
+										//var thisText = params.target.style.text;
+										//thisText = "去看"+thisText+"的客户信息";
 										if (top.location == self.location){
 											//top.location.href = window.location.protocol+"//"+window.location.host+"?user="+params.target.style.text;
 											//top.location.href = '<?=SEARVER_HOST?>customerbaseapi?callback=dataList&sign=<?=$Sign ?>&timespan=<?=$timespan ?>&uid='+params.target.style.text;
-											window.open('public/user.php?user='+params.target.style.text+'&marketing='+marketing, thisText,'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+											window.open('public/user.php?user='+name+'&marketing='+marketing, name,'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
 										}
 										
 									}

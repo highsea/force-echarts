@@ -70,7 +70,7 @@ include './../include/config.php';
 								    <li> <a class="btn cunkuan_01">显示存款柱状图</a><br>
 								    	<div id="main_lin01"></div>
 								    </li>
-								    <li> <a class="btn jinrongzichan_02 disabled">显示其他金融资产柱状图（接口有问题，待修改）</a><br>
+								    <li> <a class="btn jinrongzichan_02">显示其他金融资产柱状图</a><br>
 								    	<div id="main_lin02"></div>
 								    </li>
 								    <li> <a class="btn daikuan_03">显示贷款柱状图</a><br>
@@ -183,13 +183,21 @@ var dataArr = {
 
 //客户基本信息
 ajaxForce('customerbaseapi', $('.user_info'), dataArr, function (dataList) {
-	var yunying = {
-		"1": "已婚 <a class='btn btn-info chakanpeiou' data-toggle='modal' data-target='#myModal'>查看配偶信息</a>",
-		"0": "未婚"
-	}
+
 	var d = dataList.data;
+
 	//if (d!='') {
-		$('.user_info').append('<tr><td>姓名</td><td><p class="">'+d.CUST_NAME+'</p></td><td>性别</td><td><p>'+d.GENDER_CD+'</p></td></tr><tr><td>证件号码</td><td><p>'+d.DOCUMENT_NUM+'</p></td><td>手机号码</td><td><p>'+d.MOBILE_NUM+'</p></td></tr><tr><td>年龄</td><td><p>'+d.AGE+'</p></td><td>婚姻情况</td><td><p>'+yunying[d.MARRG_STAT_CD]+'</p></td></tr><tr><td>金融资产余额</td><td><p>'+d.FIN_ASSET_BAL+'</p></td><td>存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>商住地址</td><td><p>'+d.CONT_ADDR+'</p></td><td>其中：活期存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>主营范围</td><td><p>'+d.MainAreas+'</p></td><td>客户经理</td><td><p>'+d.AccountManager+'</p></td></tr><tr><td>所属商圈</td><td><p>'+d.CUST_NAME+'</p></td><td>经办行</td><td><p>'+d.LineManagers+'</p></td></tr>');
+		$('.user_info').append('<tr><td>姓名</td><td><p class="">'+d.CUST_NAME+'</p></td><td>性别</td><td><p>'+xingbie[d.GENDER_CD]+'</p></td></tr><tr><td>证件号码</td><td><p>'+d.DOCUMENT_NUM+'</p></td><td>手机号码</td><td><p>'+d.MOBILE_NUM+'</p></td></tr><tr><td>年龄</td><td><p>'+d.AGE+'</p></td><td>婚姻情况</td><td><p>'+yunying[d.MARRG_STAT_CD]+'</p></td></tr><tr><td>金融资产余额</td><td><p>'+d.FIN_ASSET_BAL+'</p></td><td>存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>商住地址</td><td><p>'+d.CONT_ADDR+'</p></td><td>其中：活期存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>主营范围</td><td><p>'+d.MainAreas+'</p></td><td>客户经理</td><td><p>'+d.AccountManager+'</p></td></tr><tr><td>所属商圈</td><td><p>'+d.categoryName+'</p></td><td>经办行</td><td><p>'+d.LineManagers+'</p></td></tr><tr><td colspan="4" class="user_fxyc"><a class="btn btn-info ">点击查看 '+d.CUST_NAME+' 的风险预测</a></td></tr>');
+
+		$('.user_fxyc').on('click', function() {
+			// 客户风险预计
+			ajaxForce('riskcustomerbaseapi', $('.user_fxyc'), {uid:userid}, function(dataList){
+				var d = dataList.data;
+				$('.user_fxyc').closest('tr').html('<td colspan="4"><table><tr><td>客户标示</td><td>'+biaozhiArr[d.Marked]+'</td><td>我行合作年限</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td></tr><tr><td>我行贷款余额</td><td>'+d.a110+'</td><td>我行存款余额</td><td>'+d.a100+'</td></tr><tr><td>我行非储余额</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td><td></td><td></td></tr></table></td>');
+
+			})
+
+		});
 	//} 
 	$('.chakanpeiou').on('click', function(){
 
@@ -365,6 +373,20 @@ $('.cunkuan_01').on('click', function(){
 
 })
 
+var zichan_name = {
+	'a120': '理财',
+	'a130': '基金',
+	'a140': '国债',
+	'a150': '第三方存管',
+	'a160': '贵金属',
+	'a170': '保险',
+	'a180': '私银撮合',
+	'a190': '个人外汇实盘',
+	'a101': '活期存款',
+	'a100': '存款',
+	'a110': '贷款'
+}
+
 
 //金融资产
 $('.jinrongzichan_02').on('click', function(){
@@ -372,17 +394,113 @@ $('.jinrongzichan_02').on('click', function(){
 	var dataArr = {
 		uid 		: userid,
 		//marteting 	: marketing,
-		assetstype 	: '100,101,102,110'
+		assetstype 	: '100,101,110,120,130,140,150,160,170,180,190'
 	};
 	var main_lin02 = $('#main_lin02');
 	if (main_lin02.html()=='') {
 
-		ajaxForce('assetscustomerapi', main_lin02, dataArr, function(dataList){
-			var d = dataList.data.a100;
-			console.log(d);
-			/*for (var i = 0; i < d.length; i++) {
-				d[i].
-			};*/
+		$(this).siblings('#main_lin02').css('height', '400px').html('<?=LOADING ?>');
+
+		ajaxForce('depositcustomerapi', main_lin02, dataArr, function(dataList){
+			var d = dataList.data;
+			if (d=='') {
+				alertHtml( main_lin02, 'alert-info', '<b data-code="1008">数据不存在: </b>', '存款绘图失败');
+			} else{
+
+				var riqi = [],
+					cun_kuan = [],
+					huoqicunkuan = [],
+					dai_kuan = [],
+					lichai = [],
+					jijin = [],
+					guozhai = [],
+					disanfangcunguan = [],
+					guijinshu = [],
+					baoxian = [],
+					siyincuohe = [],
+					gerenwaihui = [];
+				for (var i = 0; i < d.length; i++) {
+					riqi.push(d[i].STAT_DT);
+					cun_kuan.push(d[i].a100);
+					huoqicunkuan.push(d[i].a101);
+					dai_kuan.push(d[i].a110);
+					lichai.push(d[i].a120);
+					jijin.push(d[i].a130);
+					guozhai.push(d[i].a140);
+					disanfangcunguan.push(d[i].a150);
+					guijinshu.push(d[i].a160);
+					baoxian.push(d[i].a170);
+					siyincuohe.push(d[i].a180);
+					gerenwaihui.push(d[i].a190);
+				};
+				var titleArr = {
+					text: '其他金融资产信息',
+		        	subtext: '数据来自杜撰',
+		        	sublink: 'http://miningdata.com.cn'
+				};
+				var categoryArr = riqi;
+
+				var seriesArr = [
+				        {
+				            name: zichan_name['a100'],
+				            type: 'bar',
+				            data: cun_kuan
+				        },
+				        {
+				            name: zichan_name['a101'],
+				            type: 'bar',
+				            data: huoqicunkuan
+				        },
+				        {
+				            name: zichan_name['a110'],
+				            type: 'bar',
+				            data: dai_kuan
+				        },
+				        {
+				            name: zichan_name['a120'],
+				            type: 'bar',
+				            data: lichai
+				        },
+				        {
+				            name: zichan_name['a130'],
+				            type: 'bar',
+				            data: jijin
+				        },
+				        {
+				            name: zichan_name['a140'],
+				            type: 'bar',
+				            data: guozhai
+				        },
+				        {
+				            name: zichan_name['a150'],
+				            type: 'bar',
+				            data: disanfangcunguan
+				        },
+				        {
+				            name: zichan_name['a160'],
+				            type: 'bar',
+				            data: guijinshu
+				        },
+				        {
+				            name: zichan_name['a170'],
+				            type: 'bar',
+				            data: baoxian
+				        },
+				        {
+				            name: zichan_name['a180'],
+				            type: 'bar',
+				            data: siyincuohe
+				        },
+				        {
+				            name: zichan_name['a190'],
+				            type: 'bar',
+				            data: gerenwaihui
+				        }
+				    ];
+
+		 		linebar (titleArr ,riqi ,categoryArr, seriesArr, 'main_lin02');
+
+			};
 		})
 
 	} 
@@ -498,7 +616,7 @@ $('.daikuanmingxi_04').on('click', function(){
 		
 		$('.xiangxi04').on('click', function(){
 
-			var columnArr = [
+			var columnArr04 = [
 			    { data : 'jiejuhao'},
 			    { data : 'jieqingbiaozhi'},
 			    { data : 'fangkuanjigou'},
@@ -516,7 +634,7 @@ $('.daikuanmingxi_04').on('click', function(){
 			];
 
 			$('#myModalLabel').html('获取贷款列表详细信息');
-			install_TB('modal_table', data_tableArr, columnArr, '<thead><tr><th>借据号</th><th>结清标志</th><th>发放机构</th><th>放款日期</th><th>贷款期限</th><th>担保方式</th><th>执行利率</th><th>所属项目</th><th>到期日期</th><th>剩余本金</th><th>累计逾期次数</th><th>五级分类</th><th>还款卡当余额</th><th>本期应还款额</th></tr></thead><tbody></tbody>');
+			install_TB('modal_table', data_tableArr, columnArr04, '<thead><tr><th>借据号</th><th>结清标志</th><th>发放机构</th><th>放款日期</th><th>贷款期限</th><th>担保方式</th><th>执行利率</th><th>所属项目</th><th>到期日期</th><th>剩余本金</th><th>累计逾期次数</th><th>五级分类</th><th>还款卡当余额</th><th>本期应还款额</th></tr></thead><tbody></tbody>');
 		})
 
 	})

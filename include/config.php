@@ -45,6 +45,9 @@ function ajaxForce (urlType, dom, data, callback) {
                 
                 alertHtml( dom, 'alert-info', '<b data-code="1008">用户不存在</b>', '请查询其他用户');
 
+            }else if (dataList.code==1007) {
+                alertHtml( dom, 'alert-info', '<b data-code="1008">数据不存在</b>', '绘图失败');
+
             }else{
                 alertHtml( dom, 'alert-info', dataList.message, '错误代码：'+dataList.code);
             }

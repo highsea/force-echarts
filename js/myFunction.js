@@ -45,22 +45,27 @@ function randomColor(){
     $('.tips').append('<div class="alert '+info+'"><button type="button" class="close" data-dismiss="alert">×</button><strong>'+title+'</strong>'+message+'</div>');
 
 }*/
+var biaozhiArr = {
+    "0" : "<b class='btn btn-success disabled'>优质</b>",
+    "1" : "<b class='btn btn-danger disabled'>逾期</b>"
+};
 
+var xingbie = {
+    "1" : "女",
+    "2" : "男",
+    'null' : "未知"
+};
+var yunying = {
+    "1": "已婚 <a class='btn btn-info chakanpeiou' data-toggle='modal' data-target='#myModal'>查看配偶信息</a>",
+    "0": "未婚",
+    "Z": "未知",
+    "null" : "未知"
+};
 // 弹框 0.0
 function alertHtml( dom, info, title, message){
     dom.html('<div class="alert '+info+'"><button type="button" class="close" data-dismiss="alert">×</button><strong>'+title+'</strong>'+message+'</div>');
-
 }
 
-/*[
-    {data : 'clent_id'},
-    {data : 'name'},
-    {data : 'business'},
-    {data : 'top_hub1'},
-    {data : 'top_hub2'},
-    {data : 'date'}
-]*/
-//<thead><tr><th>客户号</th><th>名称</th><th>商圈</th><th>商户紧密度</th><th>商户关键性</th><th>期次</th></tr></thead><tbody></tbody>
 
 //生成表格
 function install_TB(t, dataArr, columnArr, tableHead){
@@ -209,7 +214,13 @@ function shuangxian(legendArr, categoryArr, seriesArr ,mainId){
     var option = {
 
         tooltip : {
-            trigger: 'axis'
+            trigger: 'axis'/*,
+            formatter:function(a){
+               var relVal = "";
+               relVal = a[0]+"万元<br/>";
+               relVal += a[1]+"笔";
+               return relVal;
+            }*/
         },
         toolbox: {
             show : true,
