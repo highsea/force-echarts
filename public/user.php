@@ -70,7 +70,7 @@ include './../include/config.php';
 								    <li> <a class="btn cunkuan_01">显示存款柱状图</a><br>
 								    	<div id="main_lin01"></div>
 								    </li>
-								    <li> <a class="btn jinrongzichan_02 disabled">显示其他金融资产柱状图（接口有问题，待修改）</a><br>
+								    <li> <a class="btn jinrongzichan_02">显示其他金融资产柱状图</a><br>
 								    	<div id="main_lin02"></div>
 								    </li>
 								    <li> <a class="btn daikuan_03">显示贷款柱状图</a><br>
@@ -365,6 +365,20 @@ $('.cunkuan_01').on('click', function(){
 
 })
 
+var zichan_name = {
+	'a120': '理财',
+	'a130': '基金',
+	'a140': '国债',
+	'a150': '第三方存管',
+	'a160': '贵金属',
+	'a170': '保险',
+	'a180': '私银撮合',
+	'a190': '个人外汇实盘',
+	'a101': '活期存款',
+	'a100': '存款',
+	'a110': '贷款'
+}
+
 
 //金融资产
 $('.jinrongzichan_02').on('click', function(){
@@ -372,17 +386,113 @@ $('.jinrongzichan_02').on('click', function(){
 	var dataArr = {
 		uid 		: userid,
 		//marteting 	: marketing,
-		assetstype 	: '100,101,102,110'
+		assetstype 	: '100,101,110,120,130,140,150,160,170,180,190'
 	};
 	var main_lin02 = $('#main_lin02');
 	if (main_lin02.html()=='') {
 
-		ajaxForce('assetscustomerapi', main_lin02, dataArr, function(dataList){
-			var d = dataList.data.a100;
-			console.log(d);
-			/*for (var i = 0; i < d.length; i++) {
-				d[i].
-			};*/
+		$(this).siblings('#main_lin02').css('height', '400px').html('<?=LOADING ?>');
+
+		ajaxForce('depositcustomerapi', main_lin02, dataArr, function(dataList){
+			var d = dataList.data;
+			if (d=='') {
+				alertHtml( main_lin02, 'alert-info', '<b data-code="1008">数据不存在: </b>', '存款绘图失败');
+			} else{
+
+				var riqi = [],
+					cun_kuan = [],
+					huoqicunkuan = [],
+					dai_kuan = [],
+					lichai = [],
+					jijin = [],
+					guozhai = [],
+					disanfangcunguan = [],
+					guijinshu = [],
+					baoxian = [],
+					siyincuohe = [],
+					gerenwaihui = [];
+				for (var i = 0; i < d.length; i++) {
+					riqi.push(d[i].STAT_DT);
+					cun_kuan.push(d[i].a100);
+					huoqicunkuan.push(d[i].a101);
+					dai_kuan.push(d[i].a110);
+					lichai.push(d[i].a120);
+					jijin.push(d[i].a130);
+					guozhai.push(d[i].a140);
+					disanfangcunguan.push(d[i].a150);
+					guijinshu.push(d[i].a160);
+					baoxian.push(d[i].a170);
+					siyincuohe.push(d[i].a180);
+					gerenwaihui.push(d[i].a190);
+				};
+				var titleArr = {
+					text: '其他金融资产信息',
+		        	subtext: '数据来自杜撰',
+		        	sublink: 'http://miningdata.com.cn'
+				};
+				var categoryArr = riqi;
+
+				var seriesArr = [
+				        {
+				            name: zichan_name['a100'],
+				            type: 'bar',
+				            data: cun_kuan
+				        },
+				        {
+				            name: zichan_name['a101'],
+				            type: 'bar',
+				            data: huoqicunkuan
+				        },
+				        {
+				            name: zichan_name['a110'],
+				            type: 'bar',
+				            data: dai_kuan
+				        },
+				        {
+				            name: zichan_name['a120'],
+				            type: 'bar',
+				            data: lichai
+				        },
+				        {
+				            name: zichan_name['a130'],
+				            type: 'bar',
+				            data: jijin
+				        },
+				        {
+				            name: zichan_name['a140'],
+				            type: 'bar',
+				            data: guozhai
+				        },
+				        {
+				            name: zichan_name['a150'],
+				            type: 'bar',
+				            data: disanfangcunguan
+				        },
+				        {
+				            name: zichan_name['a160'],
+				            type: 'bar',
+				            data: guijinshu
+				        },
+				        {
+				            name: zichan_name['a170'],
+				            type: 'bar',
+				            data: baoxian
+				        },
+				        {
+				            name: zichan_name['a180'],
+				            type: 'bar',
+				            data: siyincuohe
+				        },
+				        {
+				            name: zichan_name['a190'],
+				            type: 'bar',
+				            data: gerenwaihui
+				        }
+				    ];
+
+		 		linebar (titleArr ,riqi ,categoryArr, seriesArr, 'main_lin02');
+
+			};
 		})
 
 	} 
