@@ -80,6 +80,9 @@ var zichan_name = {
     'a500': '非存储金融资产'
 }
 
+var pieName = {
+    "0":"未知名称"
+};
 
 // 弹框 0.0
 function alertHtml( dom, info, title, message){
@@ -103,6 +106,7 @@ function install_TB(t, dataArr, columnArr, tableHead){
         "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
         "sInfoEmpty": "没有数据",
         "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+        "sSearch" : "任意关键字检索",
         "oPaginate": {
             "sFirst": "首页",
             "sPrevious": "前一页",
@@ -295,13 +299,25 @@ function shuangxian(legendArr, categoryArr, seriesArr ,mainId){
             //alert(ecConfig); 
             var zrEvent = require('zrender/tool/event'); 
             myChart.on(ecConfig.EVENT.CLICK,function (param){ 
-                alert(JSON.stringify(param)+'点击任意节点显示饼图有技术问题');
-                var temp=""; 
-                for(var i in param){ 
-                    temp += i+":"+eval("param."+i)+"\n"; 
+                //alert(JSON.stringify(param)+'点击任意节点显示饼图有技术问题');
+                var this_name = seriesArr[param.seriesIndex].name,
+                    this_data = seriesArr[param.seriesIndex].data[param.dataIndex],
+                    this_time = categoryArr[param.dataIndex];
+
+                if (param.seriesIndex=='0') {
+                    var other_name = seriesArr[1].name,
+                        other_data = seriesArr[1].data[param.dataIndex];
+                }else{
+                    var other_name = seriesArr[0].name,
+                        other_data = seriesArr[0].data[param.dataIndex];
                 }
 
-                //alert(temp); 
+                alert('您点击的点的名称：'+this_name+'；数据：'+this_data+"\n"+'竖线对应的点名称：'+other_name+'；数据：'+other_data+"\n"+'时间是：'+this_time+'；UID是：'+ userid);
+
+
+                click_pie(this_time);
+
+                
             });
 
         }
@@ -332,6 +348,11 @@ function forceOption(categoryapiLegendArr, categoriesArr, seriesNodes, seriesLin
         tooltip : {
             trigger: 'item',
             formatter: '{a} : {b} 点击查看客户信息<br/> (节点权重:{c})<br/>',
+            /*formatter:function(a){
+               var relVal = JSON.stringify(a);
+               
+               return relVal;
+            },*/
             islandFormatter : '{a} <br/> {b} : {c}'
         },
         //右上角工具，还原force、保存图表
@@ -392,7 +413,7 @@ function forceOption(categoryapiLegendArr, categoriesArr, seriesNodes, seriesLin
                         label: {
                             show: true,
                             textStyle: {
-                                color: '#000000'
+                                color: 'rgba(255,215,0,0)'
                             }
                         },
                         nodeStyle : {
@@ -446,3 +467,91 @@ function forceOption(categoryapiLegendArr, categoriesArr, seriesNodes, seriesLin
 
 }
 
+
+
+//饼图
+function pie_view(titleArr, categoryArr, seriesArr, mianId){
+
+
+    option = {
+        title : titleArr/*{
+            text: '借记卡交易对手&交易量',
+            subtext: '纯属虚构',
+            x:'center'
+        }*/,
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient : 'vertical',
+            x : 'left',
+            data: categoryArr
+            //['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {
+                    show: true, 
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'left',
+                            max: 1548
+                        }
+                    }
+                },
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        series : seriesArr/*[
+            {
+                name:'交易量',
+                type:'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value:335, name:'直接访问'},
+                    {value:310, name:'邮件营销'},
+                    {value:234, name:'联盟广告'},
+                    {value:135, name:'视频广告'},
+                    {value:1548, name:'搜索引擎'}
+                ]
+            }
+        ]*/
+    };
+                        
+    require_EC();
+
+    function require_EC () {
+        require(
+            [
+                'echarts',
+                //载入force模块
+                'echarts/chart/pie',
+                //'echarts/chart/funnel'
+            ],
+            function (ec) {
+                //确定需要绘制的DOM
+                setChats(ec);
+            }
+        )
+    }
+
+    function setChats (ec) {
+        var myChart = ec.init(document.getElementById(mianId));
+        // 过渡---------------------
+        myChart.showLoading({
+            text: '正在玩命加载中...',
+        });
+        myChart.setOption(option);
+    }
+
+}

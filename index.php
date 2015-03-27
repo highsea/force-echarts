@@ -303,7 +303,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 
 	search_type.html('');
 	$('#main').html('');
-	$('#table_id').html('');
+	$('.table_wrap_hs').html('<div class="span12 shujushijian"></div><table id="table_id" class="span12 display"></table>');
 	
 
 	$('.search_num').val('50');
@@ -338,7 +338,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 
 
 	} else if (this_text=='顶层商户') {
-		search_type.append('<option value="degree">按交易频率</option><option value="amount">节点交易金额数</option>');
+		search_type.append('<option value="degree">按交易频率</option><option value="amount">按商户活跃度</option>');
 		search_type.data('marketing', 'top');
 		//section_show.children('h3').html('交易规模和商户活跃度');
 
@@ -472,7 +472,7 @@ $('.start-table').on('click', function() {
 					kehuhao 		= l[i].name;
 
 				var dataString = {
-					"clent_id" 	: kehuhao,
+					"clent_id" 	: '<a href="./public/user.php?user='+kehuhao+'&marketing=hub" target="_blank">'+kehuhao+'</a>',
 					"business" 	: shangquanming,
 					"name" 		: xingming,
 					"top_hub1"	: jinmudu,
@@ -505,7 +505,7 @@ $('.start-table').on('click', function() {
 					kehuhao  = l[i].name;
 
 				var dataString = {
-					"clent_id" 	: kehuhao,
+					"clent_id" 	: '<a href="./public/user.php?user='+kehuhao+'&marketing=top" target="_blank">'+kehuhao+'</a>',
 					"business" 	: shangquanming,
 					"name" 		: xingming,
 					"guimo"	: jineshu,
@@ -619,9 +619,10 @@ $('.start-force').on('click',function(){
 			for (var i = 0; i < d.length; i++) {
 				var category = d[i].category,
 					name = d[i].name,
+					CUST_NAME = d[i].CUST_NAME,
 					value = d[i].value;
 					strArr = {
-						"name" 		: '',//name
+						"name" 	: CUST_NAME,//name
 						"category" 	: category,
 						"value" 	: value,
 						onclick 	: function(params){
@@ -637,13 +638,6 @@ $('.start-force').on('click',function(){
 					};
 				nodesArr.push(strArr);
 			};
-			//console.log($.parseJSON(nodesArr));
-			//+',"onclick":function(params){alert(params.target.style.text);}'
-			//console.log(nodesArr);
-			//console.log(categoryapiLegendArr);
-			//console.log(categoriesArr);
-			//console.log( dataList.data.nodes);
-			//console.log(dataList.data.links);
 
 
     		forceOption(categoryapiLegendArr, categoriesArr, nodesArr, dataList.data.links)

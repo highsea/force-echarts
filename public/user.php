@@ -100,7 +100,8 @@ include './../include/config.php';
 						    	<li> <a class="btn jiaoyixinxi_05">交易信息折线图</a><br>
 								    	<div id="main_lin05"></div>
 							    </li>
-							    <li> <a class="btn duishoujiaoyiliang_06 disabled">借记卡交易对手和交易量饼状图(存在技术问题)</a><br>
+							    <li> 借记卡交易对手和交易量饼状图（请 猛击上面折线图节点）
+							    	<br><br>
 							    	<div id="main_bar06"></div>
 							    </li>
 						    </ul>
@@ -388,13 +389,13 @@ $('.cunkuan_01').on('click', function(){
 
 
 
-//金融资产
+//金融资产变动
 $('.jinrongzichan_02').on('click', function(){
 
 	var dataArr = {
 		uid 		: userid,
 		//marteting 	: marketing,
-		assetstype 	: '100,101,110,150,180,190,500'
+		//assetstype 	: '100,101,110,150,180,190,500'
 	};
 	var main_lin02 = $('#main_lin02');
 	if (main_lin02.html()=='') {
@@ -403,79 +404,39 @@ $('.jinrongzichan_02').on('click', function(){
 
 		ajaxForce('depositcustomerapi', main_lin02, dataArr, function(dataList){
 			var d = dataList.data;
-			if (d=='') {
-				alertHtml( main_lin02, 'alert-info', '<b data-code="1008">数据不存在: </b>', '存款绘图失败');
-			} else{
 
-				var riqi = [],
-					cun_kuan = [],
-					huoqicunkuan = [],
-					dai_kuan = [],
-					//lichai = [],
-					//jijin = [],
-					//guozhai = [],
-					disanfangcunguan = [],
-					//guijinshu = [],
-					//baoxian = [],
-					siyincuohe = [],
-					gerenwaihui = [];
-				for (var i = 0; i < d.length; i++) {
-					riqi.push(d[i].STAT_DT);
-					cun_kuan.push(d[i].a100);
-					huoqicunkuan.push(d[i].a101);
-					dai_kuan.push(d[i].a110);
-					//lichai.push(d[i].a120);
-					//jijin.push(d[i].a130);
-					//guozhai.push(d[i].a140);
-					disanfangcunguan.push(d[i].a150);
-					//guijinshu.push(d[i].a160);
-					//baoxian.push(d[i].a170);
-					siyincuohe.push(d[i].a180);
-					gerenwaihui.push(d[i].a190);
-				};
-				var titleArr = {
-					text: '金融资产变动',
-		        	//subtext: '数据来自杜撰',
-		        	//sublink: 'http://miningdata.com.cn'
-				};
-				var categoryArr = [zichan_name['a100'], zichan_name['a101'], zichan_name['a110'], zichan_name['a150'], zichan_name['a180'], zichan_name['a190']];
+			var riqi = [],
+				cun_kuan = [],
+				qitajinrong = [];
 
-				var seriesArr = [
-				        {
-				            name: zichan_name['a100'],
-				            type: 'bar',
-				            data: cun_kuan
-				        },
-				        {
-				            name: zichan_name['a101'],
-				            type: 'bar',
-				            data: huoqicunkuan
-				        },
-				        {
-				            name: zichan_name['a110'],
-				            type: 'bar',
-				            data: dai_kuan
-				        },
-				        {
-				            name: zichan_name['a150'],
-				            type: 'bar',
-				            data: disanfangcunguan
-				        },
-				        {
-				            name: zichan_name['a180'],
-				            type: 'bar',
-				            data: siyincuohe
-				        },
-				        {
-				            name: zichan_name['a190'],
-				            type: 'bar',
-				            data: gerenwaihui
-				        }
-				    ];
-
-		 		linebar (titleArr ,categoryArr, riqi, seriesArr, 'main_lin02');
-
+			for (var i = 0; i < d.length; i++) {
+				riqi.push(d[i].STAT_DT);
+				cun_kuan.push(d[i].a100_FIN_ASSET_BAL);
+				qitajinrong.push(d[i].a500_FIN_ASSET_BAL);
 			};
+			var titleArr = {
+				text: '金融资产变动',
+	        	//subtext: '数据来自杜撰',
+	        	//sublink: 'http://miningdata.com.cn'
+			};
+			var categoryArr = ['存款', '非储金融资产'];
+
+			var seriesArr = [
+			        {
+			            name: '存款',
+			            type: 'bar',
+			            data: cun_kuan
+			        },
+			        {
+			            name: '非储金融资产',
+			            type: 'bar',
+			            data: qitajinrong
+			        }
+			    ];
+
+	 		linebar (titleArr ,categoryArr, riqi, seriesArr, 'main_lin02');
+
+		
 		})
 
 	} 
@@ -668,6 +629,47 @@ $('.jiaoyixinxi_05').on('click', function(){
 
 	})
 })
+
+
+function click_pie(time){
+
+	$('#main_bar06').css({
+		height: '400px',
+	});
+
+	//if ($('#main_bar06').html()=='') {
+	    
+    ajaxForce('amountandcounterpartyapi', ('#main_bar06'), {uid: userid, stat_dt: time}, function(dataList){
+    	var d = dataList.data,
+    		categoryArr = [],
+    		seriesDataArr = [];
+    	for (var i = 0; i < d.length; i++) {
+
+
+    		
+    		seriesDataArr.push({value:d[i].tansamount, name:d[i].OPP_NAME});
+    		categoryArr.push(d[i].OPP_NAME);
+    	};
+
+    	var titleArr = {
+	            text: '借记卡交易对手&交易量',
+	            //subtext: '纯属虚构',
+	            x:'center'
+	        },
+	        seriesArr = [
+		            {
+		                name:'交易量',
+		                type:'pie',
+		                radius : '55%',
+		                center: ['50%', '60%'],
+		                data: seriesDataArr
+		            }
+		        ];
+
+    	pie_view(titleArr, categoryArr, seriesArr, 'main_bar06');
+	})
+//}
+}
 
 
 </script>
