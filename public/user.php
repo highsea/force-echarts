@@ -509,8 +509,8 @@ $('.daikuan_03').on('click', function(){
 		};
 		var titleArr = {
 			text: '贷款图形信息',
-        	subtext: '数据来自杜撰',
-        	sublink: 'http://miningdata.com.cn'
+        	//subtext: '数据来自杜撰',
+        	//sublink: 'http://miningdata.com.cn'
 		};
 		var categoryArr = ['贷款余额', '月日均', '季日均', '年日均'];
 

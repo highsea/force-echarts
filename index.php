@@ -303,6 +303,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 
 	search_type.html('');
 	$('#main').html('');
+	$('#table_id').html('');
 	
 
 	$('.search_num').val('50');
@@ -339,7 +340,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 	} else if (this_text=='顶层商户') {
 		search_type.append('<option value="degree">按交易频率</option><option value="amount">节点交易金额数</option>');
 		search_type.data('marketing', 'top');
-		section_show.children('h3').html('交易规模和商户活跃度');
+		//section_show.children('h3').html('交易规模和商户活跃度');
 
 
 	} else if (this_text=='风险监测') {
@@ -476,12 +477,22 @@ $('.start-table').on('click', function() {
 					"name" 		: xingming,
 					"top_hub1"	: jinmudu,
 					"top_hub2"	: guanjianxing,
-					"date" 		: qici
+					//"date" 		: qici
 				};
 
 				dataArr.push(dataString);
 
 			};
+
+			data_tb_Arr = [
+			    {data : 'clent_id'},
+			    {data : 'name'},
+			    {data : 'business'},
+			    {data : 'top_hub1'},
+			    {data : 'top_hub2'},
+			    //{data : 'date'}
+			]
+			install_TB('table_id', dataArr, data_tb_Arr, '<thead><tr><th>客户号</th><th>名称</th><th>商圈</th><th>商户紧密度</th><th>商户关键性</th></tr></thead><tbody></tbody>');
 
 		} else{//top
 			
@@ -497,26 +508,29 @@ $('.start-table').on('click', function() {
 					"clent_id" 	: kehuhao,
 					"business" 	: shangquanming,
 					"name" 		: xingming,
-					"top_hub1"	: jinmudu,
-					"top_hub2"	: guanjianxing,
+					"guimo"	: jineshu,
+					"huoyue"	: pinglv,
 					//"date" 		: qici
 				};
 
 				dataArr.push(dataString);
 			};
 
+
+			data_tb_Arr = [
+			    {data : 'clent_id'},
+			    {data : 'name'},
+			    {data : 'business'},
+			    {data : 'guimo'},
+			    {data : 'huoyue'},
+			    //{data : 'date'}
+			]
+
+			install_TB('table_id', dataArr, data_tb_Arr, '<thead><tr><th>客户号</th><th>名称</th><th>商圈</th><th>交易规模</th><th>商户活跃度</th></tr></thead><tbody></tbody>');
+
 		};
 
-		data_tb_Arr = [
-		    {data : 'clent_id'},
-		    {data : 'name'},
-		    {data : 'business'},
-		    {data : 'top_hub1'},
-		    {data : 'top_hub2'},
-		    //{data : 'date'}
-		]
-
-		install_TB('table_id', dataArr, data_tb_Arr, '<thead><tr><th>客户号</th><th>名称</th><th>商圈</th><th>商户紧密度</th><th>商户关键性</th></tr></thead><tbody></tbody>');
+		
 
 
 	});

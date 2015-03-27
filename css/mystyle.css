@@ -24,6 +24,9 @@ border-left-color: #ce4844;
 /* 图表 */
 #main{height: 800px; border: 1px solid #ccc; padding: 10px;}
 
+#table_id_wrapper select{width: 70px;}
+
+
 .select-something{min-height: 180px;}
 .installmentsapi li {float: left;margin: 0 1em}
 .nav-tabs{margin: 0}
