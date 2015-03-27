@@ -46,8 +46,8 @@ function randomColor(){
 
 }*/
 var biaozhiArr = {
-    "0" : "<b class='btn btn-success disabled'>优质</b>",
-    "1" : "<b class='btn btn-danger disabled'>逾期</b>"
+    "0" : "<b class='btn btn-success disabled'>正常</b>",
+    "1" : "<b class='btn btn-danger disabled'>关注</b>"
 };
 
 var xingbie = {
@@ -61,6 +61,26 @@ var yunying = {
     "Z": "未知",
     "null" : "未知"
 };
+var jieqingBZarr = {
+    "1" : "未结清",
+    "0" : "结清"
+}
+var zichan_name = {
+    //'a120': '理财',//
+    //'a130': '基金',//
+    //'a140': '国债',//
+    'a150': '第三方存管',
+    //'a160': '贵金属',//
+    //'a170': '保险',//
+    'a180': '私银撮合',
+    'a190': '个人外汇实盘',
+    'a101': '活期存款',
+    'a100': '存款',
+    'a110': '贷款',
+    'a500': '非存储金融资产'
+}
+
+
 // 弹框 0.0
 function alertHtml( dom, info, title, message){
     dom.html('<div class="alert '+info+'"><button type="button" class="close" data-dismiss="alert">×</button><strong>'+title+'</strong>'+message+'</div>');
@@ -70,12 +90,13 @@ function alertHtml( dom, info, title, message){
 //生成表格
 function install_TB(t, dataArr, columnArr, tableHead){
 
-
+    $('.modal-body').html('<table id="modal_table"></table>');
     $('#'+t).html('')
     .append(tableHead)
     .DataTable({
         data    : dataArr,
         columns : columnArr,
+        "sDom"  : "l f t i p r",
         "oLanguage": {
         "sLengthMenu": "每页显示 _MENU_ 条",
         "sZeroRecords": "哎哟，找不到……",
@@ -100,34 +121,11 @@ function install_TB(t, dataArr, columnArr, tableHead){
 
 function linebar (titleArr ,dataArr, categoryArr, seriesArr, mainId){
 
-
-
-//var zrColor = require('zrender/src/tool/color');
-var colorList = [
-  '#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed',
-  '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0'
-];
-
 var option = {
     title: titleArr,
     
     tooltip: {
-        trigger: 'axis',
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        axisPointer: {
-            type: 'shadow'
-        },
-        formatter: function(params) {
-            // for text color
-            var color = colorList[params[0].dataIndex];
-            var res = '<div style="color:' + color + '">';
-            res += '<strong>' + params[0].name + '（元）</strong>'
-            for (var i = 0, l = params.length; i < l; i++) {
-                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value 
-            }
-            res += '</div>';
-            return res;
-        }
+        trigger: 'axis'
     },
     legend: {
         x: 'right',
@@ -206,6 +204,116 @@ var option = {
         )
 
 }
+
+
+
+
+//////
+
+
+
+
+
+// function linebar (titleArr, mainId){
+
+
+
+// //var zrColor = require('zrender/src/tool/color');
+// var colorList = [
+//   '#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed',
+//   '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0'
+// ];
+
+// var option = {
+//     title: titleArr,
+    
+//     tooltip: {
+//         trigger: 'axis'
+//     },
+//     legend: {
+//         x: 'right',
+//         data:['2010','2011','2012','2013']
+//     },
+//     toolbox: {
+//         show: true,
+//         orient: 'vertical',
+//         y: 'center',
+//         feature: {
+//             mark: {show: true},
+//             dataView: {show: true, readOnly: false},
+//             restore: {show: true},
+//             saveAsImage: {show: true}
+//         }
+//     },
+//     calculable: true,
+//     grid: {
+//         y: 80,
+//         y2: 40,
+//         x2: 40
+//     },
+//     xAxis: [
+//         {
+//             type: 'category',
+//             data: ['食品', '衣着', '居住', '家庭设备及用品', '医疗保健', '交通和通信', '文教娱乐服务', '其他']
+//         }
+//     ],
+//     yAxis: [
+//         {
+//             type: 'value'
+//         }
+//     ],
+//     series: [
+//         {
+//             name: '2010',
+//             type: 'bar',
+//             //itemStyle: itemStyle,
+//             data: [4804.7,1444.3,1332.1,908,871.8,1983.7,1627.6,499.2]
+//         },
+//         {
+//             name: '2011',
+//             type: 'bar',
+//             //itemStyle: itemStyle,
+//             data: [5506.3,1674.7,1405,1023.2,969,2149.7,1851.7,581.3]
+//         },
+//         {
+//             name: '2012',
+//             type: 'bar',
+//             //itemStyle: itemStyle,
+//             data: [6040.9,1823.4,1484.3,1116.1,1063.7,2455.5,2033.5,657.1]
+//         },
+//         {
+//             name: '2013',
+//             type: 'bar',
+//             //itemStyle: itemStyle,
+//             data: [6311.9,1902,1745.1,1215.1,1118.3,2736.9,2294,699.4]
+//         }
+//     ]
+// };
+                    
+
+//         require(
+//             [
+//                 'echarts',
+//                 'echarts/chart/line',
+//                 'echarts/chart/bar'
+//             ],
+//             function (ec) {
+//                 var myChart = ec.init(document.getElementById(mainId));
+//                 myChart.setOption(option);
+//             }
+//         )
+
+// }
+
+
+
+
+
+////////
+
+
+
+
 
 
 //绘制双线 双坐标 图

@@ -70,7 +70,7 @@ include './../include/config.php';
 								    <li> <a class="btn cunkuan_01">显示存款柱状图</a><br>
 								    	<div id="main_lin01"></div>
 								    </li>
-								    <li> <a class="btn jinrongzichan_02">显示其他金融资产柱状图</a><br>
+								    <li> <a class="btn jinrongzichan_02">显示金融资产变动</a><br>
 								    	<div id="main_lin02"></div>
 								    </li>
 								    <li> <a class="btn daikuan_03">显示贷款柱状图</a><br>
@@ -247,6 +247,9 @@ $('.associatecustomerapi').on('click', function(dataList){
 					    { data : 'kehuhao'},
 					    { data : 'gongtongkehu'}
 					];
+
+
+
 			install_TB('guanliankehu', data_tableArr, columnArr, '<thead><tr><th>序号</th><th>客户类型</th><th>客户号</th><th>共同客户</th></tr></thead><tbody></tbody>');
 
 		})
@@ -283,6 +286,14 @@ $('#guanliankehu').on('click', '.togethercustomer', function(){
 			    { data : 'biaoshi'},
 			    { data : 'kehuhao'}
 			];
+
+		$('#myModal').on('show', function () {
+			$(this).css({
+				width: '500px',
+				marginLeft: '-250px'
+			});
+		});
+
 		install_TB('modal_table', data_tableArr, columnArr, '<thead><tr><th>序号</th><th>客户标识</th><th>客户号</th></tr></thead><tbody></tbody>');
 		//获取共同客户 的模态框
 		//$('#myModal').on('show', function () {
@@ -335,11 +346,11 @@ $('.cunkuan_01').on('click', function(){
 					yuerijunArr.push(yuerijun);
 				};
 				var titleArr = {
-					text: '存款图形信息',
-		        	subtext: '数据来自杜撰',
-		        	sublink: 'http://miningdata.com.cn'
+					text: '存款变化',
+		        	//subtext: '数据来自杜撰',
+		        	//sublink: 'http://miningdata.com.cn'
 				};
-				var categoryArr = riqiArr;
+				var categoryArr = ['存款余额', '月日均', '季日均', '年日均'];
 
 				var seriesArr = [
 				        {
@@ -364,7 +375,9 @@ $('.cunkuan_01').on('click', function(){
 				        }
 				    ];
 
-		 		linebar (titleArr ,riqiArr ,categoryArr, seriesArr, 'main_lin01');
+		 		linebar (titleArr ,categoryArr, riqiArr, seriesArr, 'main_lin01');
+		 		//linebar (titleArr , 'main_lin01');
+
 
 			};
 		})
@@ -373,19 +386,6 @@ $('.cunkuan_01').on('click', function(){
 
 })
 
-var zichan_name = {
-	'a120': '理财',
-	'a130': '基金',
-	'a140': '国债',
-	'a150': '第三方存管',
-	'a160': '贵金属',
-	'a170': '保险',
-	'a180': '私银撮合',
-	'a190': '个人外汇实盘',
-	'a101': '活期存款',
-	'a100': '存款',
-	'a110': '贷款'
-}
 
 
 //金融资产
@@ -394,7 +394,7 @@ $('.jinrongzichan_02').on('click', function(){
 	var dataArr = {
 		uid 		: userid,
 		//marteting 	: marketing,
-		assetstype 	: '100,101,110,120,130,140,150,160,170,180,190'
+		assetstype 	: '100,101,110,150,180,190,500'
 	};
 	var main_lin02 = $('#main_lin02');
 	if (main_lin02.html()=='') {
@@ -411,12 +411,12 @@ $('.jinrongzichan_02').on('click', function(){
 					cun_kuan = [],
 					huoqicunkuan = [],
 					dai_kuan = [],
-					lichai = [],
-					jijin = [],
-					guozhai = [],
+					//lichai = [],
+					//jijin = [],
+					//guozhai = [],
 					disanfangcunguan = [],
-					guijinshu = [],
-					baoxian = [],
+					//guijinshu = [],
+					//baoxian = [],
 					siyincuohe = [],
 					gerenwaihui = [];
 				for (var i = 0; i < d.length; i++) {
@@ -424,21 +424,21 @@ $('.jinrongzichan_02').on('click', function(){
 					cun_kuan.push(d[i].a100);
 					huoqicunkuan.push(d[i].a101);
 					dai_kuan.push(d[i].a110);
-					lichai.push(d[i].a120);
-					jijin.push(d[i].a130);
-					guozhai.push(d[i].a140);
+					//lichai.push(d[i].a120);
+					//jijin.push(d[i].a130);
+					//guozhai.push(d[i].a140);
 					disanfangcunguan.push(d[i].a150);
-					guijinshu.push(d[i].a160);
-					baoxian.push(d[i].a170);
+					//guijinshu.push(d[i].a160);
+					//baoxian.push(d[i].a170);
 					siyincuohe.push(d[i].a180);
 					gerenwaihui.push(d[i].a190);
 				};
 				var titleArr = {
-					text: '其他金融资产信息',
-		        	subtext: '数据来自杜撰',
-		        	sublink: 'http://miningdata.com.cn'
+					text: '金融资产变动',
+		        	//subtext: '数据来自杜撰',
+		        	//sublink: 'http://miningdata.com.cn'
 				};
-				var categoryArr = riqi;
+				var categoryArr = [zichan_name['a100'], zichan_name['a101'], zichan_name['a110'], zichan_name['a150'], zichan_name['a180'], zichan_name['a190']];
 
 				var seriesArr = [
 				        {
@@ -457,34 +457,9 @@ $('.jinrongzichan_02').on('click', function(){
 				            data: dai_kuan
 				        },
 				        {
-				            name: zichan_name['a120'],
-				            type: 'bar',
-				            data: lichai
-				        },
-				        {
-				            name: zichan_name['a130'],
-				            type: 'bar',
-				            data: jijin
-				        },
-				        {
-				            name: zichan_name['a140'],
-				            type: 'bar',
-				            data: guozhai
-				        },
-				        {
 				            name: zichan_name['a150'],
 				            type: 'bar',
 				            data: disanfangcunguan
-				        },
-				        {
-				            name: zichan_name['a160'],
-				            type: 'bar',
-				            data: guijinshu
-				        },
-				        {
-				            name: zichan_name['a170'],
-				            type: 'bar',
-				            data: baoxian
 				        },
 				        {
 				            name: zichan_name['a180'],
@@ -498,7 +473,7 @@ $('.jinrongzichan_02').on('click', function(){
 				        }
 				    ];
 
-		 		linebar (titleArr ,riqi ,categoryArr, seriesArr, 'main_lin02');
+		 		linebar (titleArr ,categoryArr, riqi, seriesArr, 'main_lin02');
 
 			};
 		})
@@ -537,7 +512,7 @@ $('.daikuan_03').on('click', function(){
         	subtext: '数据来自杜撰',
         	sublink: 'http://miningdata.com.cn'
 		};
-		var categoryArr = riqiArr;
+		var categoryArr = ['贷款余额', '月日均', '季日均', '年日均'];
 
 		var seriesArr = [
 		        {
@@ -562,7 +537,7 @@ $('.daikuan_03').on('click', function(){
 		        }
 		    ];
 
- 		linebar (titleArr ,riqiArr ,categoryArr, seriesArr, 'main_lin03');
+ 		linebar (titleArr , categoryArr, riqiArr, seriesArr, 'main_lin03');
 	})
 
 })
@@ -592,7 +567,7 @@ $('.daikuanmingxi_04').on('click', function(){
 				    'zhixinglilv': d[i].EXEC_INT_RATE,
 				    'fangkuanjine': d[i].DISTR_AMT,
 				    'tianjiariqi': d[i].STAT_DT,
-				    'jieqingbiaozhi' :d[i].PAYOFF_IND,
+				    'jieqingbiaozhi' :jieqingBZarr[d[i].PAYOFF_IND],
 				    'daikuanqixian': d[i].LOAN_TERM
 			    };
 
@@ -633,8 +608,16 @@ $('.daikuanmingxi_04').on('click', function(){
 			    { data : 'benyueyinghuan'}
 			];
 
-			$('#myModalLabel').html('获取贷款列表详细信息');
+			$('#myModalLabel').html('贷款详情 <small>表格可以左右滚动</small>');
+			$('#myModal').on('show', function () {
+				$(this).css({
+					width: '1024px',
+					marginLeft: '-512px'
+				});
+			});
+
 			install_TB('modal_table', data_tableArr, columnArr04, '<thead><tr><th>借据号</th><th>结清标志</th><th>发放机构</th><th>放款日期</th><th>贷款期限</th><th>担保方式</th><th>执行利率</th><th>所属项目</th><th>到期日期</th><th>剩余本金</th><th>累计逾期次数</th><th>五级分类</th><th>还款卡当余额</th><th>本期应还款额</th></tr></thead><tbody></tbody>');
+			$('#modal_table').find('[type=search]').closest('label').html('借据号过滤: <input type="search" class="" placeholder="" aria-controls="main_table04">');
 		})
 
 	})

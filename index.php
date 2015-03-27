@@ -35,7 +35,7 @@ include './include/config.php';
 			</h1>
 			
 			<div class="row-fluid">
-				<div class="span3">
+				<div class="span2">
 					<div class="accordion" id="accordion-fn">
 						<div class="accordion-group">
 							<div class="accordion-heading">
@@ -100,7 +100,7 @@ include './include/config.php';
 					</div>
 					
 				</div>
-				<div class="span9">
+				<div class="span10">
 					<section data-html="tips">
 						<h2>还未设置默认页面，您应该从左侧工具栏选择！</h2>
 					</section>
@@ -339,6 +339,8 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 	} else if (this_text=='顶层商户') {
 		search_type.append('<option value="degree">按交易频率</option><option value="amount">节点交易金额数</option>');
 		search_type.data('marketing', 'top');
+		section_show.children('h3').html('交易规模和商户活跃度');
+
 
 	} else if (this_text=='风险监测') {
 		//alert('接口未找到，或 还未开发')
@@ -453,8 +455,8 @@ $('.start-table').on('click', function() {
 
 		var l = dataList.data.data,
 			dataArr = [],
-			starttime = dataList.data.datatime.starttime,
-			endtime = dataList.data.datatime.endtime;
+			starttime = dataList.data.datatime[0],
+			endtime = dataList.data.datatime[1];
 		$('.shujushijian').html('<p>数据时间：<b>'+starttime+'</b> 至 <b>'+endtime+'</b></p>');
 
 		if (ajaxDataArr.marketing=='hub') {
@@ -486,7 +488,7 @@ $('.start-table').on('click', function() {
 			for (var i = 0; i < l.length; i++) {
 				var pinglv 	= l[i].degree,
 				    jineshu = l[i].amount,
-				    qici 	= l[i].addtime,
+				    //qici 	= l[i].addtime,
 				    shangquanming = l[i].categoryName,
 				    xingming = l[i].CUST_NAME,
 					kehuhao  = l[i].name;
@@ -497,7 +499,7 @@ $('.start-table').on('click', function() {
 					"name" 		: xingming,
 					"top_hub1"	: jinmudu,
 					"top_hub2"	: guanjianxing,
-					"date" 		: qici
+					//"date" 		: qici
 				};
 
 				dataArr.push(dataString);
@@ -511,10 +513,10 @@ $('.start-table').on('click', function() {
 		    {data : 'business'},
 		    {data : 'top_hub1'},
 		    {data : 'top_hub2'},
-		    {data : 'date'}
+		    //{data : 'date'}
 		]
 
-		install_TB('table_id', dataArr, data_tb_Arr, '<thead><tr><th>客户号</th><th>名称</th><th>商圈</th><th>商户紧密度</th><th>商户关键性</th><th>期次</th></tr></thead><tbody></tbody>');
+		install_TB('table_id', dataArr, data_tb_Arr, '<thead><tr><th>客户号</th><th>名称</th><th>商圈</th><th>商户紧密度</th><th>商户关键性</th></tr></thead><tbody></tbody>');
 
 
 	});
