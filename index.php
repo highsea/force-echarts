@@ -333,7 +333,7 @@ $('#accordion-fn').on('click', '.business-hub,.business-top, .risk-management', 
 
 	//设置 特定 界面
 	if (this_text=='枢纽商户') {
-		search_type.append('<option value="betweennesss">按商户紧密度</option><option value="closeness">按商户关键性</option>');
+		search_type.append('<option value="betweenness">按商户紧密度</option><option value="closeness">按商户关键性</option>');
 		search_type.data('marketing', 'hub');
 
 
@@ -464,7 +464,7 @@ $('.start-table').on('click', function() {
 			
 			for (var i = 0; i < l.length; i++) {
 
-				var jinmudu  		= l[i].betweennesss,
+				var jinmudu  		= l[i].betweenness,
 					guanjianxing 	= l[i].closeness,
 					qici 			= l[i].addtime,
 					shangquanming 	= l[i].categoryName,
@@ -622,7 +622,7 @@ $('.start-force').on('click',function(){
 					CUST_NAME = d[i].CUST_NAME,
 					value = d[i].value;
 					strArr = {
-						"name" 	: CUST_NAME,//name
+						"name" 	: CUST_NAME+':'+name,//name
 						"category" 	: category,
 						"value" 	: value,
 						onclick 	: function(params){
@@ -631,7 +631,7 @@ $('.start-force').on('click',function(){
 										if (top.location == self.location){
 											//top.location.href = window.location.protocol+"//"+window.location.host+"?user="+params.target.style.text;
 											//top.location.href = '<?=SEARVER_HOST?>customerbaseapi?callback=dataList&sign=<?=$Sign ?>&timespan=<?=$timespan ?>&uid='+params.target.style.text;
-											window.open('public/user.php?user='+name+'&marketing='+marketing, name,'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+											window.open('public/user.php?user='+params.target.style.text+'&marketing='+marketing, params.target.style.text,'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
 										}
 										
 									}

@@ -128,8 +128,14 @@ function linebar (titleArr ,dataArr, categoryArr, seriesArr, mainId){
 var option = {
     title: titleArr,
     
-    tooltip: {
-        trigger: 'axis'
+    tooltip : {
+        trigger: 'axis',
+        /*formatter:function(a){
+           var relVal = "";
+           relVal = a[0]+"万元<br/>";
+           //relVal += a[1]+"笔";
+           return relVal;
+        }*/
     },
     legend: {
         x: 'right',
@@ -162,9 +168,14 @@ var option = {
     ],
     yAxis: [
         {
-            type: 'value'
+            type: 'value',
+            name: '万元',
+            axisLabel : {
+                formatter: '{value} 万元'
+            }
         }
     ],
+
     series: seriesArr
     /*[
         {
@@ -312,7 +323,7 @@ function shuangxian(legendArr, categoryArr, seriesArr ,mainId){
                         other_data = seriesArr[0].data[param.dataIndex];
                 }
 
-                alert('您点击的点的名称：'+this_name+'；数据：'+this_data+"\n"+'竖线对应的点名称：'+other_name+'；数据：'+other_data+"\n"+'时间是：'+this_time+'；UID是：'+ userid);
+                //alert('您点击的点的名称：'+this_name+'；数据：'+this_data+"\n"+'竖线对应的点名称：'+other_name+'；数据：'+other_data+"\n"+'时间是：'+this_time+'；UID是：'+ userid);
 
 
                 click_pie(this_time);

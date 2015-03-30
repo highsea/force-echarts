@@ -174,8 +174,14 @@ require.config({
 
 
 var marketing = "<?= $_GET['marketing'] ?>",
-	userid = "<?=$_GET['user'] ?>";
+	userall = "<?=$_GET['user'] ?>";
+	
 
+if (userall.indexOf(':')==-1) {
+	userid = userall;
+}else{
+	userid = userall.split(':')[1];
+}
 
 var dataArr = {
 	uid 		: userid,
