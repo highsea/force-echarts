@@ -150,7 +150,7 @@ include './../include/config.php';
 <script type="text/javascript" charset="utf8" src="./../js/jquery.dataTables.js"></script>
 <script src="./../js/esl.js"></script>
 <!-- <script src="js/store1.1.1.min.js"></script> -->
-<script src="./../js/myFunction.js"></script>
+<script src="./../js/myFunction-1.0.0.js"></script>
 <script>
 
 
@@ -200,7 +200,7 @@ ajaxForce('customerbaseapi', $('.user_info'), dataArr, function (dataList) {
 			// 客户风险预计
 			ajaxForce('riskcustomerbaseapi', $('.user_fxyc'), {uid:userid}, function(dataList){
 				var d = dataList.data;
-				$('.user_fxyc').closest('tr').html('<td colspan="4"><table><tr><td>客户标示</td><td>'+biaozhiArr[d.Marked]+'</td><td>我行合作年限</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td></tr><tr><td>我行贷款余额</td><td>'+d.a110+'</td><td>我行存款余额</td><td>'+d.a100+'</td></tr><tr><td>我行非储余额</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td><td></td><td></td></tr></table></td>');
+				$('.user_fxyc').closest('tr').html('<td colspan="4"><table><tr><td>客户标示</td><td>'+biaozhiArr[d.Marked]+'</td><td>我行合作年限</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td></tr><tr><td>我行贷款余额</td><td>'+d.a110+' 元</td><td>我行存款余额</td><td>'+d.a100+' 元</td></tr><tr><td>我行非储余额</td><td>'+d.NonStorageBalance+' 天 </td><td></td><td></td></tr></table></td>');
 
 			})
 

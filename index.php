@@ -166,7 +166,7 @@ include './include/config.php';
 <div class="row-fluid">
 	<div class="span12 userinfo">
 		
-<!-- <iframe src=""></iframe> -->
+
 
 	</div>
 </div>
@@ -587,17 +587,17 @@ $('.start-force').on('click',function(){
 		                }
 					}
 				};
-				//var str = '"'+cate_a[i].name+'":true'; 
+				var str = '"'+cate_a[i].name+'":true'; 
 
 				categoriesArr.push(Arr);
-				//categoryapiLegenddata.push(cate_a[i].name);
-				//shangquan.push(str);
+				categoryapiLegenddata.push(cate_a[i].name);
+				shangquan.push(str);
 			}
 
 
-/*			//console.log(categoriesArr);
-			console.log($.parseJSON('{'+shangquan.join(',')+'}'));
-			console.log('结果2：'+categoriesArr);
+			//console.log(categoriesArr);
+			//console.log($.parseJSON('{'+shangquan.join(',')+'}'));
+			//console.log('结果2：'+categoriesArr);
 
     		//console.log('links:'+dataList.data.links+'；nodes:'+dataList.data.nodes);
     		var categoryapiLegendArr = {
@@ -607,9 +607,10 @@ $('.start-force').on('click',function(){
 			        x : 'left'
 				};
 
-			console.log(categoryapiLegendArr);*/
+			//console.log(categoryapiLegendArr);
 
-			var categoryapiLegendArr 	= dataList.data.category.legend;
+			//var categoryapiLegendArr 	= dataList.data.category.legend;
+			
 
 			var d = dataList.data.nodes;
 			var nodesArr = [];
@@ -617,26 +618,24 @@ $('.start-force').on('click',function(){
 			for (var i = 0; i < d.length; i++) {
 				var category = d[i].category,
 					name = d[i].name,
-					CUST_NAME = d[i].CUST_NAME,
 					value = d[i].value;
 					strArr = {
-						"name" 	: CUST_NAME+':'+name,//name
+						"name" 		: name,
 						"category" 	: category,
 						"value" 	: value,
 						onclick 	: function(params){
-										//var thisText = params.target.style.text;
-										//thisText = "去看"+thisText+"的客户信息";
+										var thisText = params.target.style.text;
+										thisText = "去看"+thisText+"的客户信息";
 										if (top.location == self.location){
 											//top.location.href = window.location.protocol+"//"+window.location.host+"?user="+params.target.style.text;
 											//top.location.href = '<?=SEARVER_HOST?>customerbaseapi?callback=dataList&sign=<?=$Sign ?>&timespan=<?=$timespan ?>&uid='+params.target.style.text;
-											window.open('public/user.php?user='+params.target.style.text+'&marketing='+marketing, params.target.style.text,'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+											window.open('public/user.php?user='+params.target.style.text+'&marketing='+marketing, thisText,'height=800,width=960,top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
 										}
 										
 									}
 					};
 				nodesArr.push(strArr);
 			};
-
 
     		forceOption(categoryapiLegendArr, categoriesArr, nodesArr, dataList.data.links)
     	})

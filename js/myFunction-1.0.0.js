@@ -51,7 +51,7 @@ function randomColor(){
     $('.tips').append('<div class="alert '+info+'"><button type="button" class="close" data-dismiss="alert">×</button><strong>'+title+'</strong>'+message+'</div>');
 
 }*/
-var nodeColor = ['#FF7F50', '#87CEFA', '#DA70D6', '#32CD32', '#6495ED', '#FF69B4', '#BA55D3', '#CD5C5C', '#FFA500', '#40E0D0', '#1E90FF', '#FF6347', '#7B68EE', '#00FA9A', '#FFD700'];
+var nodeColor = ['#FF7F50', '#87CEFA', '#DA70D6', '#32CD32', '#6495ED', '#FF69B4', '#BA55D3', '#CD5C5C', '#FFA500', '#40E0D0', '#1E90FF', '#FF6347', '#7B68EE', '#00FA9A', '#FFD700', '#6699FF'];
 var biaozhiArr = {
     "0" : "<b class='btn btn-success disabled'>正常</b>",
     "1" : "<b class='btn btn-danger disabled'>关注</b>"
