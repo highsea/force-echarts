@@ -37,6 +37,6 @@
 
 [1]: http://images.cnitblog.com/blog/531703/201501/271722234258301.gif 	"快速预览"
 [2]: http://images.cnitblog.com/blog2015/531703/201503/171524216424771.gif "v 0.0.2 "
-[3]: http://images.cnitblog.com/blog2015/531703/201503/301619405923763.gif "v 0.0.3-1"
+[3]: http://images.cnitblog.com/blog2015/531703/201503/311103547329554.gif "v 0.0.3-1"
 [4]: http://images.cnitblog.com/blog2015/531703/201503/301619459673439.gif "v 0.0.3-2"
 

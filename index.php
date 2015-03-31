@@ -272,7 +272,7 @@ include './include/config.php';
 <script type="text/javascript" charset="utf8" src="js/jquery.dataTables.js"></script>
 <script src="js/esl.js"></script>
 <!-- <script src="js/store1.1.1.min.js"></script> -->
-<script src="js/myFunction.js"></script>
+<script src="js/myFunction-1.0.0.js"></script>
 <script type="text/javascript">
 
 
@@ -571,31 +571,31 @@ $('.start-force').on('click',function(){
     	ajaxForce ('graphinformationapi', $('#main'), ajaxDataArr, function(dataList){
 
 
-		    /*var cate_a = dataList.data.category;
+		    var cate_a = dataList.data.category.category;
 			for (var i = 0; i < cate_a.length; i++) {
 
 				var Arr = {
 					"name" 		: cate_a[i].name,
-					"keyword" 	: {},
-					"base" 		: cate_a[i].base,
+					//"keyword" 	: {},
+					//"base" 		: cate_a[i].base,
 					"itemStyle" : {
 		                "normal": {
-		                    "brushType" 	: "both",
-		                    "color"         : randomColor(),
-		                    "strokeColor"   : randomColor(),
-		                    "lineWidth" 	: 1
+		                    //"brushType" 	: "both",
+		                    "color"         : nodeColor[i],
+		                    //"strokeColor"   : '#000',
+		                    //"lineWidth" 	: 1
 		                }
 					}
 				};
-				var str = '"'+cate_a[i].name+'":true'; 
+				//var str = '"'+cate_a[i].name+'":true'; 
 
 				categoriesArr.push(Arr);
-				categoryapiLegenddata.push(cate_a[i].name);
-				shangquan.push(str);
+				//categoryapiLegenddata.push(cate_a[i].name);
+				//shangquan.push(str);
 			}
 
 
-			//console.log(categoriesArr);
+/*			//console.log(categoriesArr);
 			console.log($.parseJSON('{'+shangquan.join(',')+'}'));
 			console.log('结果2：'+categoriesArr);
 
@@ -606,12 +606,10 @@ $('.start-force').on('click',function(){
 			        orient : 'vertical',
 			        x : 'left'
 				};
-			//console.log(dataList.data.nodes.length);
-			//console.log(dataList.data.links.length);
+
 			console.log(categoryapiLegendArr);*/
 
-			var categoryapiLegendArr 	= dataList.data.category.legend,
-				categoriesArr 			= dataList.data.category.category;
+			var categoryapiLegendArr 	= dataList.data.category.legend;
 
 			var d = dataList.data.nodes;
 			var nodesArr = [];
