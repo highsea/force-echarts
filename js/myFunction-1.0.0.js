@@ -63,9 +63,9 @@ var xingbie = {
     'null' : "未知"
 };
 var yunying = {
-    "1": "已婚 <a class='btn btn-info chakanpeiou' data-toggle='modal' data-target='#myModal'>查看配偶信息</a>",
-    "0": "未婚",
-    "Z": "未知",
+    "2": "已婚 <a class='btn btn-info chakanpeiou' data-toggle='modal' data-target='#myModal'>查看配偶信息</a>",
+    "1": "未婚",
+    "3": "离异",
     "null" : "未知"
 };
 var jieqingBZarr = {

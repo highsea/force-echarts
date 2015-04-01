@@ -16,7 +16,8 @@ include './include/config.php';
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta charset="UTF-8">
+<meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <title>展示页</title>
 <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="css/bootstrap/css/bootstrap-theme.min.css"> -->
@@ -540,14 +541,16 @@ $('.start-table').on('click', function() {
 
 
 
-//获取 categories
-var categoriesArr = [],
-	categoryapiLegenddata = [],
-	shangquan = [];
+
 
 
 //验证绘图数据 开始绘图
 $('.start-force').on('click',function(){
+
+//获取 categories
+var categoriesArr = [],
+	categoryapiLegenddata = [],
+	shangquan = [];
 
     var pagecount_num = $('.search_num').val(),
     	allinformationapi_type = $('.search_type').val(),
@@ -618,9 +621,10 @@ $('.start-force').on('click',function(){
 			for (var i = 0; i < d.length; i++) {
 				var category = d[i].category,
 					name = d[i].name,
+					cn_name = d[i].CUST_NAME
 					value = d[i].value;
 					strArr = {
-						"name" 		: name,
+						"name" 		: cn_name+':'+name,
 						"category" 	: category,
 						"value" 	: value,
 						onclick 	: function(params){

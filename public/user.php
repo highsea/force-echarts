@@ -9,7 +9,9 @@ include './../include/config.php';
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta charset="UTF-8">
+<meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
 <title> <?=$_GET['user'] ?> 的客户信息</title>
 <link rel="stylesheet" href="./../css/bootstrap/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="./../css/bootstrap/css/bootstrap-theme.min.css"> -->
@@ -194,13 +196,13 @@ ajaxForce('customerbaseapi', $('.user_info'), dataArr, function (dataList) {
 	var d = dataList.data;
 
 	//if (d!='') {
-		$('.user_info').append('<tr><td>姓名</td><td><p class="">'+d.CUST_NAME+'</p></td><td>性别</td><td><p>'+xingbie[d.GENDER_CD]+'</p></td></tr><tr><td>证件号码</td><td><p>'+d.DOCUMENT_NUM+'</p></td><td>手机号码</td><td><p>'+d.MOBILE_NUM+'</p></td></tr><tr><td>年龄</td><td><p>'+d.AGE+'</p></td><td>婚姻情况</td><td><p>'+yunying[d.MARRG_STAT_CD]+'</p></td></tr><tr><td>金融资产余额</td><td><p>'+d.FIN_ASSET_BAL+'</p></td><td>存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>商住地址</td><td><p>'+d.CONT_ADDR+'</p></td><td>其中：活期存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>主营范围</td><td><p>'+d.MainAreas+'</p></td><td>客户经理</td><td><p>'+d.AccountManager+'</p></td></tr><tr><td>所属商圈</td><td><p>'+d.categoryName+'</p></td><td>经办行</td><td><p>'+d.LineManagers+'</p></td></tr><tr><td colspan="4" class="user_fxyc"><a class="btn btn-info ">点击查看 '+d.CUST_NAME+' 的风险预测</a></td></tr>');
+		$('.user_info').append('<tr><td>姓名</td><td><p class="">'+d.CUST_NAME+'</p></td><td>性别</td><td><p>'+xingbie[d.GENDER_CD]+'</p></td></tr><tr><td>证件号码</td><td><p>'+d.DOCUMENT_NUM+'</p></td><td>手机号码</td><td><p>'+d.MOBILE_NUM+'</p></td></tr><tr><td>年龄</td><td><p>'+d.AGE+'</p></td><td>婚姻情况</td><td><p>'+yunying[d.MARRG_STAT_CD]+'</p></td></tr><tr><td>金融资产余额</td><td><p>'+d.FIN_ASSET_BAL+'</p></td><td>存款</td><td><p>'+d.DPSIT_BAL+'</p></td></tr><tr><td>商住地址</td><td><p>'+d.CONT_ADDR+'</p></td><td>其中：活期存款</td><td><p>'+d.a101+'</p></td></tr><tr><td>主营范围</td><td><p>'+d.MainAreas+'</p></td><td>客户经理</td><td><p>'+d.AccountManager+'</p></td></tr><tr><td>所属商圈</td><td><p>'+d.categoryName+'</p></td><td>经办行</td><td><p>'+d.LineManagers+'</p></td></tr><tr><td colspan="4" class="user_fxyc"><a class="btn btn-info ">点击查看 '+d.CUST_NAME+' 的风险预测</a></td></tr>');
 
 		$('.user_fxyc').on('click', function() {
 			// 客户风险预计
 			ajaxForce('riskcustomerbaseapi', $('.user_fxyc'), {uid:userid}, function(dataList){
 				var d = dataList.data;
-				$('.user_fxyc').closest('tr').html('<td colspan="4"><table><tr><td>客户标示</td><td>'+biaozhiArr[d.Marked]+'</td><td>我行合作年限</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td></tr><tr><td>我行贷款余额</td><td>'+d.a110+' 元</td><td>我行存款余额</td><td>'+d.a100+' 元</td></tr><tr><td>我行非储余额</td><td>'+d.NonStorageBalance+' 天 </td><td></td><td></td></tr></table></td>');
+				$('.user_fxyc').closest('tr').html('<td colspan="4"><table><tr><td>客户标示</td><td>'+biaozhiArr[d.Marked]+'</td><td>我行合作年限</td><td>'+d.FIRST_OPEN_CARD_YEAR+'</td></tr><tr><td>我行贷款余额</td><td>'+d.a110+' </td><td>我行存款余额</td><td>'+d.a100+' </td></tr><tr><td>我行非储余额</td><td>'+d.NonStorageBalance+'  </td><td></td><td></td></tr></table></td>');
 
 			})
 
