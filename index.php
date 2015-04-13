@@ -249,7 +249,7 @@ include './include/config.php';
 
 </div>
 
-<!-- 风险 end  -->
+<!-- 风险 end -->
 
 					</section>
 					<section data-html="other-fn" class="none">
@@ -267,13 +267,13 @@ include './include/config.php';
 
 
 
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="./js/jquery.min.js"></script>
 <script src="css/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="js/jquery.dataTables.js"></script>
 <script src="js/esl.js"></script>
 <!-- <script src="js/store1.1.1.min.js"></script> -->
-<script src="js/myFunction-1.0.0.js"></script>
+<script src="js/myFunction-1.0.1.js"></script>
 <script type="text/javascript">
 
 

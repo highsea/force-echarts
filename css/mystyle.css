@@ -21,11 +21,15 @@
 border-left-color: #ce4844;
 }
 
+body{overflow-x: hidden;}
+
 /* 图表 */
 #main{height: 800px; border: 1px solid #ccc; padding: 10px;}
 
-#table_id_wrapper select{width: 70px;}
-
+.tab-content{overflow-x: hidden}
+#table_id_wrapper{padding-right: 2em}
+#table_id_wrapper select,#fxjc_table_wrapper select{width: 70px;}
+#fxjc_table_wrapper{  margin: 1em;}
 
 .select-something{min-height: 180px;}
 .installmentsapi li {float: left;margin: 0 1em}

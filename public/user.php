@@ -106,6 +106,11 @@ include './../include/config.php';
 							    	<br><br>
 							    	<div id="main_bar06"></div>
 							    </li>
+							    <li>
+							    	<a class="btn list_jiaoyi_07">交易信息详细列表</a><br>
+							    	<div id="main_table_07"></div>
+							    	<div id="main_table_08"></div>
+							    </li>
 						    </ul>
 						</div>
 					</div>
@@ -146,13 +151,13 @@ include './../include/config.php';
 
 
 
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="./../js/jquery.min.js"></script>
 <script src="./../css/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="./../js/jquery.dataTables.js"></script>
 <script src="./../js/esl.js"></script>
 <!-- <script src="js/store1.1.1.min.js"></script> -->
-<script src="./../js/myFunction-1.0.0.js"></script>
+<script src="./../js/myFunction-1.0.1.js"></script>
 <script>
 
 
@@ -642,21 +647,29 @@ $('.jiaoyixinxi_05').on('click', function(){
 function click_pie(time){
 
 	$('#main_bar06').css({
-		height: '400px',
+		height: '500px',
 	});
 
 	//if ($('#main_bar06').html()=='') {
 	    
     ajaxForce('amountandcounterpartyapi', ('#main_bar06'), {uid: userid, stat_dt: time}, function(dataList){
-    	var d = dataList.data,
+    	var d = dataList.data.c1,
+    		e = dataList.data.c0,
     		categoryArr = [],
+    		seriesAllArr = [
+    			{value:d.all, name:'行外用户'},
+    			{value:e.all, name:'行内用户'}
+    		],
     		seriesDataArr = [];
-    	for (var i = 0; i < d.length; i++) {
+    	for (var i = 0; i < d.list.length; i++) {
 
+    		seriesDataArr.push({value:d.list[i].transamount, name:d.list[i].OPP_NAME, uid:d.list[i].OPP_PARTY_ID});
+    		categoryArr.push(d.list[i].OPP_NAME);
+    	};
+    	for (var i = 0; i < e.list.length; i++) {
 
-    		
-    		seriesDataArr.push({value:d[i].tansamount, name:d[i].OPP_NAME});
-    		categoryArr.push(d[i].OPP_NAME);
+    		seriesDataArr.push({value:e.list[i].transamount, name:e.list[i].OPP_NAME, uid:e.list[i].OPP_PARTY_ID});
+    		categoryArr.push(e.list[i].OPP_NAME);
     	};
 
     	var titleArr = {
@@ -666,18 +679,46 @@ function click_pie(time){
 	        },
 	        seriesArr = [
 		            {
-		                name:'交易量',
+		                name:'行内外用户交易量',
 		                type:'pie',
-		                radius : '55%',
-		                center: ['50%', '60%'],
-		                data: seriesDataArr
-		            }
+		                radius : [0, 70],
+		                selectedMode: 'single',
+		                x: '20%',
+			            width: '40%',
+			            funnelAlign: 'right',
+			            max: 1548,
+			            
+			            itemStyle : {
+			                normal : {
+			                    label : {
+			                        position : 'inner'
+			                    },
+			                    labelLine : {
+			                        show : false
+			                    }
+			                }
+			            },
+		                data: seriesAllArr
+		            },
+			        {
+			            name:'借记卡交易对手交易量',
+			            type:'pie',
+			            radius : [100, 140],
+			            // for funnel
+			            x: '60%',
+			            width: '35%',
+			            funnelAlign: 'left',
+			            max: 1048,
+			            data:seriesDataArr
+			        }
 		        ];
-
-    	pie_view(titleArr, categoryArr, seriesArr, 'main_bar06');
+		//console.log(categoryArr, seriesArr);
+    	pie_view(titleArr, categoryArr, seriesArr, 'main_bar06', marketing);
 	})
 //}
 }
+
+
 
 
 </script>
