@@ -69,13 +69,13 @@ include './../include/config.php';
 							<div class="">
 
 								<ul>
-								    <li> <a class="btn cunkuan_01">显示存款柱状图</a><br>
+								    <li> <a class="btn cunkuan_01">显示存款变化图</a><br>
 								    	<div id="main_lin01"></div>
 								    </li>
 								    <li> <a class="btn jinrongzichan_02">显示金融资产变动</a><br>
 								    	<div id="main_lin02"></div>
 								    </li>
-								    <li> <a class="btn daikuan_03">显示贷款柱状图</a><br>
+								    <li> <a class="btn daikuan_03">显示贷款变化图</a><br>
 								    	<div id="main_lin03"></div>
 								    </li>
 								    <li> <a class="btn daikuanmingxi_04">显示贷款明细表格</a> <br>
@@ -108,8 +108,12 @@ include './../include/config.php';
 							    </li>
 							    <li>
 							    	<a class="btn list_jiaoyi_07">交易信息详细列表</a><br>
-							    	<div id="main_table_07"></div>
-							    	<div id="main_table_08"></div>
+							    	<div id="main_table_07">
+							    		
+							    	</div>
+							    	<div id="main_table_08">
+
+							    	</div>
 							    </li>
 						    </ul>
 						</div>
@@ -157,7 +161,7 @@ include './../include/config.php';
 <script type="text/javascript" charset="utf8" src="./../js/jquery.dataTables.js"></script>
 <script src="./../js/esl.js"></script>
 <!-- <script src="js/store1.1.1.min.js"></script> -->
-<script src="./../js/myFunction-1.0.1.js"></script>
+<script src="./../js/myFunction-1.0.2.js"></script>
 <script>
 
 
@@ -341,7 +345,62 @@ $('.cunkuan_01').on('click', function(){
 				alertHtml( main_lin01, 'alert-info', '<b data-code="1008">数据不存在: </b>', '存款绘图失败');
 			} else{
 
+				//柱状图改成标准折线图
+				var categoryArr = ['存款余额', '月日均', '季日均', '年日均'];
+				var titleArr = {
+					text: '存款变化',
+		        	//subtext: '数据来自杜撰',
+		        	//sublink: 'http://miningdata.com.cn'
+				};
 				var riqiArr = [],
+					zichanyueArr = [],
+					jirijunArr = [],
+					nianrijunArr = [],
+					yuerijunArr = [];
+				for (var i = 0; i < d.length; i++) {
+					var riqi = d[i].STAT_DT,
+						zichanyue = d[i].FIN_ASSET_BAL,
+						yuerijun = d[i].FIN_ASSET_BAL_MONTH_DAY_AVG,
+						jirijun = d[i].FIN_ASSET_BAL_QUAR_DAY_AVG,
+						nianrijun = d[i].FIN_ASSET_BAL_YEAR_DAY_AVG;
+
+					riqiArr.push(riqi);
+					zichanyueArr.push(zichanyue);
+					jirijunArr.push(jirijun);
+					nianrijunArr.push(nianrijun);
+					yuerijunArr.push(yuerijun);
+				};
+				seriesArr = [
+						{
+				            name: '存款余额',
+				            type: 'line',
+				            data: zichanyueArr,
+				            //markPoint : markPointArr,
+				            //markLine : markLineArr
+				        },
+				        {
+				            name: '月日均',
+				            type: 'line',
+				            data: jirijunArr,
+				        },
+				        {
+				            name: '季日均',
+				            type: 'line',
+				            data: nianrijunArr,
+				        },
+				        {
+				            name: '年日均',
+				            type: 'line',
+				            data: yuerijunArr,
+				        }
+				];
+
+
+				bLine (titleArr ,riqiArr, categoryArr, seriesArr, 'main_lin01');
+
+
+				//柱状图 改成 折线图
+				/*var riqiArr = [],
 					zichanyueArr = [],
 					jirijunArr = [],
 					nianrijunArr = [],
@@ -389,7 +448,7 @@ $('.cunkuan_01').on('click', function(){
 				        }
 				    ];
 
-		 		linebar (titleArr ,categoryArr, riqiArr, seriesArr, 'main_lin01');
+		 		linebar (titleArr ,categoryArr, riqiArr, seriesArr, 'main_lin01');*/
 		 		//linebar (titleArr , 'main_lin01');
 
 
@@ -437,17 +496,17 @@ $('.jinrongzichan_02').on('click', function(){
 			var seriesArr = [
 			        {
 			            name: '存款',
-			            type: 'bar',
+			            type: 'line',
 			            data: cun_kuan
 			        },
 			        {
 			            name: '非储金融资产',
-			            type: 'bar',
+			            type: 'line',
 			            data: qitajinrong
 			        }
 			    ];
 
-	 		linebar (titleArr ,categoryArr, riqi, seriesArr, 'main_lin02');
+			bLine (titleArr , riqi, categoryArr,  seriesArr, 'main_lin02');
 
 		
 		})
@@ -491,22 +550,22 @@ $('.daikuan_03').on('click', function(){
 		var seriesArr = [
 		        {
 		            name: '贷款余额',
-		            type: 'bar',
+		            type: 'line',
 		            data: daikuanyueArr
 		        },
 		        {
 		            name: '月日均',
-		            type: 'bar',
+		            type: 'line',
 		            data: jirijunArr
 		        },
 		        {
 		            name: '季日均',
-		            type: 'bar',
+		            type: 'line',
 		            data: nianrijunArr
 		        },
 		        {
 		            name: '年日均',
-		            type: 'bar',
+		            type: 'line',
 		            data: yuerijunArr
 		        }
 		    ];
@@ -718,6 +777,58 @@ function click_pie(time){
 //}
 }
 
+
+$('.list_jiaoyi_07').on('click', function(event) {
+	event.preventDefault();
+	$('#main_table_07, #main_table_08').html('<?=LOADING ?>');
+
+	ajaxForce('listamountandcounterpartyapi', $('#main_table_07, #main_table_08'), {uid:userid}, function(dataList){
+
+		var d = dataList.data.c1,
+			e = dataList.data.c0,
+			data_tableArrC1 = [],
+			data_tableArrC0 = [];
+		for (var i = 0; i < d.length; i++) {
+
+			var new_data = {
+				    'jiaoyishijian' : d[i].ETL_TX_DT,
+				    'kehuhao' : d[i].OPP_PARTY_ID,
+				    'jiaoyiliang' : d[i].tansamount,
+				    'duishouming': d[i].OPP_NAME,
+			    };
+
+			data_tableArrC1.push(new_data);
+		}
+
+
+		for (var i = 0; i < e.length; i++) {
+
+			var new_data = {
+				    'jiaoyishijian' : e[i].ETL_TX_DT,
+				    'kehuhao' : e[i].OPP_PARTY_ID,
+				    'jiaoyiliang' : e[i].tansamount,
+				    'duishouming': e[i].OPP_NAME,
+			    };
+
+			data_tableArrC0.push(new_data);
+		}
+
+
+		var columnArr = [
+			    { data : 'kehuhao'},
+			    { data : 'duishouming'},
+			    { data : 'jiaoyiliang'},
+			    { data : 'jiaoyishijian'},
+			];
+		$('#main_table_07').html('<h4>行内交易对手</h4><table id="main_table_C0"></table>');
+		$('#main_table_08').html('<h4>行外交易对手</h4><table id="main_table_C1"></table>');
+
+		install_TB('main_table_C1', data_tableArrC1, columnArr, '<thead><tr><th>客户号</th><th>姓名</th><th>交易金额 / 元</th><th>交易时间</th></tr></thead><tbody></tbody>');
+		install_TB('main_table_C0', data_tableArrC0, columnArr, '<thead><tr><th>客户号</th><th>姓名</th><th>交易金额 / 元</th><th>交易时间</th></tr></thead><tbody></tbody>');
+
+	})
+
+});
 
 
 
