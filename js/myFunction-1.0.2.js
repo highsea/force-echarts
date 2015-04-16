@@ -57,10 +57,10 @@ var biaozhiArr = {
     "1" : "<b class='btn btn-danger disabled'>关注</b>"
 };
 var pieYinhang = {
-    'c1' : "行外用户",
-    'c0' : "行内用户",
-    '1'  : '行外',
-    '0'  : '行内'
+    'c0' : "行外用户",
+    'c1' : "行内用户",
+    '0'  : '行外',
+    '1'  : '行内'
 }
 
 var xingbie = {

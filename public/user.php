@@ -716,8 +716,8 @@ function click_pie(time){
     		e = dataList.data.c0,
     		categoryArr = [],
     		seriesAllArr = [
-    			{value:d.all, name:'行外用户'},
-    			{value:e.all, name:'行内用户'}
+    			{value:d.all, name:pieYinhang[c1]},
+    			{value:e.all, name:pieYinhang[c0]}
     		],
     		seriesDataArr = [];
     	for (var i = 0; i < d.list.length; i++) {
@@ -792,7 +792,7 @@ $('.list_jiaoyi_07').on('click', function(event) {
 
 			var new_data = {
 				    'jiaoyishijian' : d[i].ETL_TX_DT,
-				    'kehuhao' : d[i].OPP_PARTY_ID,
+				    'kehuhao' : '<a target="_blank" href="?user='+ d[i].OPP_PARTY_ID+'&marketing='+marketing+'">'+ d[i].OPP_PARTY_ID+'</a>',
 				    'jiaoyiliang' : d[i].tansamount,
 				    'duishouming': d[i].OPP_NAME,
 			    };
@@ -805,7 +805,7 @@ $('.list_jiaoyi_07').on('click', function(event) {
 
 			var new_data = {
 				    'jiaoyishijian' : e[i].ETL_TX_DT,
-				    'kehuhao' : e[i].OPP_PARTY_ID,
+				    'kehuhao' : '<a target="_blank" href="?user='+ e[i].OPP_PARTY_ID+'&marketing='+marketing+'">'+ e[i].OPP_PARTY_ID+'</a>',
 				    'jiaoyiliang' : e[i].tansamount,
 				    'duishouming': e[i].OPP_NAME,
 			    };
@@ -820,8 +820,8 @@ $('.list_jiaoyi_07').on('click', function(event) {
 			    { data : 'jiaoyiliang'},
 			    { data : 'jiaoyishijian'},
 			];
-		$('#main_table_07').html('<h4>行内交易对手</h4><table id="main_table_C0"></table>');
-		$('#main_table_08').html('<h4>行外交易对手</h4><table id="main_table_C1"></table>');
+		$('#main_table_07').html('<h4>'+pieYinhang['c0']+'交易对手</h4><table id="main_table_C0"></table>');
+		$('#main_table_08').html('<h4>'+pieYinhang['c1']+'交易对手</h4><table id="main_table_C1"></table>');
 
 		install_TB('main_table_C1', data_tableArrC1, columnArr, '<thead><tr><th>客户号</th><th>姓名</th><th>交易金额 / 元</th><th>交易时间</th></tr></thead><tbody></tbody>');
 		install_TB('main_table_C0', data_tableArrC0, columnArr, '<thead><tr><th>客户号</th><th>姓名</th><th>交易金额 / 元</th><th>交易时间</th></tr></thead><tbody></tbody>');

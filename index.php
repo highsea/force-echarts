@@ -24,6 +24,9 @@ include './include/config.php';
 <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
 
 <link rel="stylesheet" href="css/mystyle.css">
+<script>
+	//window.location.href=window.location.href+'#panel-01';
+</script>
 </head>
 <body>
 
@@ -32,7 +35,7 @@ include './include/config.php';
 	<div class="row-fluid">
 		<div class="span12">
 			<h1>
-				XX项目 <div class="tips"></div>
+				<!-- 民生银行数据分析辅助决策系统 --> <div class="tips"></div>
 			</h1>
 			
 			<div class="row-fluid">
@@ -73,7 +76,7 @@ include './include/config.php';
 												</div>
 											</div>
 										</div>
-										<div class="accordion-group">
+										<!-- <div class="accordion-group">
 											<div class="accordion-heading">
 												 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-msyh" href="#accordion-element-3">其他</a>
 											</div>
@@ -82,13 +85,13 @@ include './include/config.php';
 													其他内容
 												</div>
 											</div>
-										</div>
+										</div> -->
 									</div>
 
 								</div>
 							</div>
 						</div>
-						<div class="accordion-group">
+						<!-- <div class="accordion-group">
 							<div class="accordion-heading">
 								 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-msyh" href="#accordion-element-fn2">可扩展功能2</a>
 							</div>
@@ -97,13 +100,13 @@ include './include/config.php';
 									可扩展功能2 的内容
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					
 				</div>
 				<div class="span10">
-					<section data-html="tips">
-						<h2>还未设置默认页面，您应该从左侧工具栏选择！</h2>
+					<section data-html="tips" id='tabs-000'>
+						<h2>民生银行数据分析辅助决策系统</h2>
 					</section>
 					<section data-html="business-marketing" class="none">
 						<h3>
@@ -252,11 +255,11 @@ include './include/config.php';
 <!-- 风险 end -->
 
 					</section>
-					<section data-html="other-fn" class="none">
+					<!-- <section data-html="other-fn" class="none">
 						<h3>
 							其他内容
 						</h3>
-					</section>
+					</section> -->
 
 				</div>
 			</div>
