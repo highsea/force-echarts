@@ -716,8 +716,8 @@ function click_pie(time){
     		e = dataList.data.c0,
     		categoryArr = [],
     		seriesAllArr = [
-    			{value:d.all, name:pieYinhang[c1]},
-    			{value:e.all, name:pieYinhang[c0]}
+    			{value:d.all, name:pieYinhang['c1']},
+    			{value:e.all, name:pieYinhang['c0']}
     		],
     		seriesDataArr = [];
     	for (var i = 0; i < d.list.length; i++) {
